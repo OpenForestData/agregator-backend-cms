@@ -1,4 +1,5 @@
 import os  # isort:skip
+
 gettext = lambda s: s
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 """
@@ -30,24 +31,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
-
-
 
 
 ROOT_URLCONF = 'core.urls'
 
-
-
 WSGI_APPLICATION = 'core.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-
 
 
 # Password validation
@@ -68,7 +60,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -82,25 +73,25 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+STATIC_URL = '/static-cms/'
+MEDIA_URL = '/media-cms/'
 MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_ROOT = os.path.join(DATA_DIR, 'static')
+
 #
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'core', 'static'),
 # )
-SITE_ID = 1
 
+SITE_ID = 1
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'core', 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'core', 'templates'), ],
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -122,7 +113,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 MIDDLEWARE = [
     'cms.middleware.utils.ApphookReloadMiddleware',
@@ -238,7 +228,6 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters'
 )
-
 
 PROJECT_INFO = {
     'site_name': "FlyUp"
