@@ -78,8 +78,8 @@ USE_TZ = True
 
 STATIC_URL = '/static-cms/'
 MEDIA_URL = '/media-cms/'
-MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
-STATIC_ROOT = os.path.join(DATA_DIR, 'static')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 #
 # STATICFILES_DIRS = (
@@ -173,12 +173,12 @@ INSTALLED_APPS = [
     # additional apps
     'content_manager',
     'page_manager',
+    'api'
 ]
 
 LANGUAGES = (
     ## Customize this
     ('pl', gettext('pl')),
-    ('en', gettext('en')),
 )
 
 CMS_LANGUAGES = {
@@ -202,8 +202,6 @@ CMS_LANGUAGES = {
 CMS_TEMPLATES = (
     ## Customize this
     ('fullwidth.html', 'Fullwidth'),
-    ('sidebar_left.html', 'Sidebar Left'),
-    ('sidebar_right.html', 'Sidebar Right')
 )
 
 CMS_PERMISSION = True

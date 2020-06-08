@@ -1,4 +1,5 @@
 from cms.extensions import PageExtension, extension_pool
+from cms.models import Title
 from django.db import models
 from filer.fields.image import FilerImageField
 
@@ -18,3 +19,8 @@ class MetaTagsExtension(PageExtension):
 
 
 extension_pool.register(MetaTagsExtension)
+
+
+class AboutUsPage(models.Model):
+    page = models.ForeignKey(Title, on_delete=models.CASCADE, blank=True, null=True, related_name="about_us_pages")
+    title = models.CharField(max_length=120, verbose_name="Tytuł", default="Olo")

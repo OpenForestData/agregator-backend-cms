@@ -1,3 +1,5 @@
+from cms.extensions import TitleExtension, extension_pool
+from cms.models.pagemodel import Page
 from cms.models import CMSPlugin
 from cms.plugin_base import CMSPluginBase
 from django.db import models
@@ -35,3 +37,9 @@ class Slide(ImageMixin):
     content_image = FilerImageField(verbose_name="Zdjęcie po kliknięciu w cotntent", on_delete=models.CASCADE,
                                     null=True, blank=True, related_name='content_image')
 
+
+class ExtendedPage(TitleExtension):
+    my_extra_field = models.CharField(max_length=120)
+
+
+extension_pool.register(ExtendedPage)
