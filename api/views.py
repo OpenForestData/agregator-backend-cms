@@ -1,5 +1,7 @@
 from cms.cms_menus import CMSMenu
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from api.models import FacetField
 from menus.menu_pool import menu_pool
 
@@ -31,4 +33,20 @@ def global_data(request):
 
 
 def get_page_details(request, page_id):
+    return JsonResponse({})
+
+
+@csrf_exempt
+def populate_categories_fields_list(request):
+    if request.POST:
+        categories_to_populate = request.POST.getlist('category')
+    return JsonResponse({})
+
+
+def get_categories_fields_list(request):
+    return JsonResponse({})
+
+
+@csrf_exempt
+def ragister_metadata_blocks(request):
     return JsonResponse({})

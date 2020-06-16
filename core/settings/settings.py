@@ -230,3 +230,5 @@ THUMBNAIL_PROCESSORS = (
 PROJECT_INFO = {
     'site_name': "FlyUp"
 }
+
+APPEND_SLASH = False

@@ -139,5 +139,5 @@ dmypy.json
 cython_debug/
 
 #Pycharm
-.idea/
-sqliteproject.db
+.idea
+.db
