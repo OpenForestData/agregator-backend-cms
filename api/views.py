@@ -1,14 +1,23 @@
+import json
+
 from cms.cms_menus import CMSMenu
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from api.models import FacetField
+from api.data_populator import DataPopulator
+from api.models import FacetField, FilterGroup, AgregatorCategory
 from menus.menu_pool import menu_pool
 
 
 def facet_list(request):
-    all_facets = FacetField.objects.all().order_by('order').values('facet_field_name', 'facet_field_friendly_name')
-    return JsonResponse(list(all_facets), safe=False)
+    all_facets = {}
+    for field_group in FilterGroup.objects.all().order_by('order'):
+        all_facets[field_group.name] = {
+            'friendly_name': field_group.friendly_name,
+            'id': field_group.id,
+            'fields': field_group.get_fields()
+        }
+    return JsonResponse(all_facets, safe=False)
 
 
 def global_data(request):
@@ -38,15 +47,45 @@ def get_page_details(request, page_id):
 
 @csrf_exempt
 def populate_categories_fields_list(request):
+    """
+    Endpoint responsible for populating categories based on
+    agregator registered data
+    :param request: request
+    :return: 200, 400
+    """
     if request.POST:
-        categories_to_populate = request.POST.getlist('category')
-    return JsonResponse({})
+        categories_to_populate = request.POST.get('categories_fields_list', None)
+        if categories_to_populate:
+            data_populator = DataPopulator()
+            successfully_populated = data_populator.populate_categories(categories_to_populate)
+            if successfully_populated:
+                return HttpResponse('Properly populated categories')
+    return HttpResponse(
+        'Could not populate categories', status=400)
 
 
 def get_categories_fields_list(request):
-    return JsonResponse({})
+    public_categories = {}
+    for category in AgregatorCategory.objects.filter(public=True).order_by('order'):
+        public_categories[category.name] = {
+            'name': category.name,
+            'friendly_name': category.friendly_name,
+            'id': category.id,
+        }
+    return JsonResponse(public_categories, safe=False)
 
 
 @csrf_exempt
 def ragister_metadata_blocks(request):
-    return JsonResponse({})
+    if request.POST:
+        metadata_json_string = request.POST.get('metadata_blocks', None)
+        if metadata_json_string:
+            try:
+                metadata_blocks = json.loads(metadata_json_string)
+                data_populator = DataPopulator()
+                successfully_populated = data_populator.populate_metadata_blocks(metadata_blocks)
+                return HttpResponse('Properly populated metadata blocks') if successfully_populated else HttpResponse(
+                    'Could not populate metadata blocks', status=400)
+            except Exception as ex:
+                print(ex)
+    return HttpResponse('Something went wrong', status=400)

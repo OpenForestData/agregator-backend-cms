@@ -15,5 +15,5 @@ urlpatterns = [
     # /api/v1/global-data
     url(r'^global-data$', api_views.global_data, name="global_data"),
     # /api/v1/get-categories-fields-list
-    url(r'^get_categories_fields_list$', api_views.get_categories_fields_list, name="get_categories_fields_list")
+    url(r'^get-categories$', api_views.get_categories_fields_list, name="get_categories_fields_list")
 ]

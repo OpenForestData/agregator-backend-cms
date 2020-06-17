@@ -193,7 +193,7 @@ CMS_LANGUAGES = {
         },
     ],
     'default': {
-        'redirect_on_fallback': True,
+        'redirect_on_fallback': False,
         'public': True,
         'hide_untranslated': False,
     },
@@ -228,7 +228,7 @@ THUMBNAIL_PROCESSORS = (
 )
 
 PROJECT_INFO = {
-    'site_name': "FlyUp"
+    'site_name': "Agregator Backend CMS"
 }
 
 APPEND_SLASH = False
