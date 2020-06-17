@@ -33,7 +33,7 @@ class DataPopulator:
                 if field_data['name'] not in al_filter_fields_names:
                     FilterField.objects.create(
                         field_name=field_data['name'],
-                        field_friendly_name=field_data['displayName'],
+                        friendly_name=field_data['displayName'],
                         title=field_data['title'],
                         type=field_data['type'],
                         watermark=field_data['watermark'],

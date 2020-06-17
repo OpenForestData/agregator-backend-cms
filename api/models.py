@@ -46,7 +46,7 @@ class FilterField(models.Model):
     """
     filter_group = models.ForeignKey(FilterGroup, related_name='fields', on_delete=models.CASCADE)
     field_name = models.CharField(max_length=120, verbose_name="Nazwa pola w Dataverse", unique=True)
-    field_friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
+    friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
     title = models.CharField(max_length=120, verbose_name="Tytuł")
     type = models.CharField(max_length=120, verbose_name="Rodzaj pola")
     watermark = models.CharField(max_length=120, verbose_name="Watermark")
