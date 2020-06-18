@@ -1,7 +1,5 @@
 from django.core.management.base import BaseCommand
 
-from api.initialization_api.initialize_api import initialize_api
-
 
 class Command(BaseCommand):
     """
@@ -21,7 +19,6 @@ class Command(BaseCommand):
         """
 
         self.stdout.write(self.style.SUCCESS('Starting populating data for API module'))
-        initialize_api()
 
         self.stdout.write(
             self.style.SUCCESS(

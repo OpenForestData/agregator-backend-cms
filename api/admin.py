@@ -1,15 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from api.models import FacetField, FilterGroup, FilterField, AgregatorCategory
-
-
-class FacetFieldAdmin(admin.ModelAdmin):
-    model = FacetField
-    ordering = ['order']
-
-
-admin.site.register(FacetField, FacetFieldAdmin)
+from api.models import FilterGroup, FilterField, AgregatorCategory, AdvancedSearchFilterField, AdvancedSearchFilterGroup
 
 
 class FilterFieldAdmin(admin.StackedInline):
@@ -23,6 +15,19 @@ class FilterGroupAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FilterGroup, FilterGroupAdmin)
+
+
+class AdvancedSearchFilterFieldAdmin(admin.StackedInline):
+    model = AdvancedSearchFilterField
+    ordering = ['order']
+
+
+class AdvancedSearchFilterGroupAdmin(admin.ModelAdmin):
+    model = AdvancedSearchFilterGroup
+    inlines = [AdvancedSearchFilterFieldAdmin, ]
+
+
+admin.site.register(AdvancedSearchFilterGroup, AdvancedSearchFilterGroupAdmin)
 
 
 class AgregatorCategoryAdmin(admin.ModelAdmin):

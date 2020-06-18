@@ -5,14 +5,20 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from api.data_populator import DataPopulator
-from api.models import FacetField, FilterGroup, AgregatorCategory
+from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
 from menus.menu_pool import menu_pool
 
 
 def facet_list(request):
-    all_facets = {}
+    all_facets = {'basic_filters': {}, 'advanced_search_filters': {}}
     for field_group in FilterGroup.objects.all().order_by('order'):
-        all_facets[field_group.name] = {
+        all_facets['basic_filters'][field_group.name] = {
+            'friendly_name': field_group.friendly_name,
+            'id': field_group.id,
+            'fields': field_group.get_fields()
+        }
+    for field_group in AdvancedSearchFilterGroup.objects.all().order_by('order'):
+        all_facets['advanced_search_filters'][field_group.name] = {
             'friendly_name': field_group.friendly_name,
             'id': field_group.id,
             'fields': field_group.get_fields()
