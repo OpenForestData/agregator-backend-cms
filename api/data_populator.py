@@ -34,7 +34,7 @@ class DataPopulator:
                 if field_data['name'] not in al_filter_fields_names:
                     # TODO: delete on production
 
-                    if iterator % 10 == 0:
+                    if iterator % 50 == 0:
                         FilterField.objects.create(
                             field_name=field_data['name'],
                             friendly_name=field_data['displayName'],
