@@ -29,21 +29,26 @@ class DataPopulator:
                 )
             else:
                 filter_group = FilterGroup.objects.get(name=metadata_value['name'])
+            iterator = 0
             for _, field_data in metadata_value['fields'].items():
                 if field_data['name'] not in al_filter_fields_names:
-                    FilterField.objects.create(
-                        field_name=field_data['name'],
-                        friendly_name=field_data['displayName'],
-                        title=field_data['title'],
-                        type=field_data['type'],
-                        watermark=field_data['watermark'],
-                        description=field_data['description'],
-                        filter_group=filter_group
+                    # TODO: delete on production
 
-                    )
-        all_advanced_search_filter_groups_names = [filter_group['name'] for filter_group in AdvancedSearchFilterGroup.objects.all().values('name')]
+                    if iterator % 10 == 0:
+                        FilterField.objects.create(
+                            field_name=field_data['name'],
+                            friendly_name=field_data['displayName'],
+                            title=field_data['title'],
+                            type=field_data['type'],
+                            watermark=field_data['watermark'],
+                            description=field_data['description'],
+                            filter_group=filter_group,
+                        )
+                    iterator += 1
+        all_advanced_search_filter_groups_names = [filter_group['name'] for filter_group in
+                                                   AdvancedSearchFilterGroup.objects.all().values('name')]
         al_advanced_search_filter_fields_names = [filter_field['field_name'] for filter_field in
-                                  AdvancedSearchFilterField.objects.all().values('field_name')]
+                                                  AdvancedSearchFilterField.objects.all().values('field_name')]
 
         for metadata_name, metadata_value in metadata_blocks.items():
             if metadata_value['name'] not in all_advanced_search_filter_groups_names:
