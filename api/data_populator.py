@@ -33,18 +33,17 @@ class DataPopulator:
             for _, field_data in metadata_value['fields'].items():
                 if field_data['name'] not in al_filter_fields_names:
                     # TODO: delete on production
-
-                    if iterator % 50 == 0:
-                        FilterField.objects.create(
-                            field_name=field_data['name'],
-                            friendly_name=field_data['displayName'],
-                            title=field_data['title'],
-                            type=field_data['type'],
-                            watermark=field_data['watermark'],
-                            description=field_data['description'],
-                            filter_group=filter_group,
-                        )
-                    iterator += 1
+                    FilterField.objects.create(
+                        field_name=field_data['name'],
+                        friendly_name=field_data['displayName'],
+                        title=field_data['title'],
+                        type=field_data['type'],
+                        watermark=field_data['watermark'],
+                        description=field_data['description'],
+                        filter_group=filter_group,
+                        public=True if iterator % 50 == 0 else False
+                    )
+                iterator += 1
         all_advanced_search_filter_groups_names = [filter_group['name'] for filter_group in
                                                    AdvancedSearchFilterGroup.objects.all().values('name')]
         al_advanced_search_filter_fields_names = [filter_field['field_name'] for filter_field in
