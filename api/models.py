@@ -72,7 +72,7 @@ class FilterField(models.Model):
     friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
     title = models.CharField(max_length=120, verbose_name="Tytuł")
     type = models.CharField(max_length=120, verbose_name="Rodzaj pola")
-    watermark = models.CharField(max_length=120, verbose_name="Watermark")
+    watermark = models.CharField(max_length=120, verbose_name="Watermark", null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")
