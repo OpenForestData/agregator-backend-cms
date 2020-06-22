@@ -98,3 +98,6 @@ class AgregatorCategory(models.Model):
 
     def __str__(self):
         return self.friendly_name
+
+
+

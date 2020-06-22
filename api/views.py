@@ -1,12 +1,16 @@
 import json
 
 from cms.cms_menus import CMSMenu
+from cms.models import Page
 from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from api.data_populator import DataPopulator
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
 from menus.menu_pool import menu_pool
+
+from core.settings import CMS_LANGUAGES
 
 
 def facet_list(request):
@@ -26,7 +30,7 @@ def facet_list(request):
     return JsonResponse(all_facets, safe=False)
 
 
-def global_data(request):
+def menu(request):
     """
     Endpoint responsible for providing basic 'each view'
     data for frontend
@@ -34,20 +38,24 @@ def global_data(request):
     :return: Json data
     """
     response = {
-        'menu': []
+        'menu': {}
     }
-    pages = menu_pool.get_renderer(request).get_nodes(request)
-    for page in pages:
-        response['menu'].append({
-            'id': page.id,
-            'title': page.title,
-            'attr': page.attr,
-            'parent_id': page.parent_id
-        })
+    for lang in CMS_LANGUAGES[1]:
+        lang_code = lang['code']
+        response['menu'][lang_code] = []
+        request.COOKIES['django_language'] = lang['code']
+        pages = menu_pool.get_renderer(request).get_nodes(request)
+        for page in pages:
+            response['menu'][lang_code].append({
+                'id': page.id,
+                'title': page.title,
+                'attr': page.attr,
+                'parent_id': page.parent_id,
+            })
     return JsonResponse(response, safe=False)
 
 
-def get_page_details(request, page_id):
+def page_details(request, page_id: int, lang_code: str):
     return JsonResponse({})
 
 
@@ -95,3 +103,7 @@ def ragister_metadata_blocks(request):
             except Exception as ex:
                 print(ex)
     return HttpResponse('Something went wrong', status=400)
+
+#
+# def initialize_static_filters():
+#     #TODO not good place for that1

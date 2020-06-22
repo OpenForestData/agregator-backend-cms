@@ -19,7 +19,6 @@ class Command(BaseCommand):
         """
 
         self.stdout.write(self.style.SUCCESS('Starting populating data for API module'))
-
         self.stdout.write(
             self.style.SUCCESS(
                 '>>>>>>>>>>>>>>>>>>>>>>>>> Successfully initialized all data <<<<<<<<<<<<<<<<<<<<<<<<<<'))
