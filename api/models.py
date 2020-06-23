@@ -1,4 +1,5 @@
 from django.db import models
+from djangocms_text_ckeditor.fields import HTMLField
 
 
 class AdvancedSearchFilterGroup(models.Model):
@@ -88,6 +89,7 @@ class AgregatorCategory(models.Model):
     """
     dataverse_id = models.CharField(max_length=120, verbose_name="Dataverse Id", unique=True)
     friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
+    description = HTMLField(null=True, blank=True)
     name = models.CharField(max_length=120, verbose_name="Name", unique=True)
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")

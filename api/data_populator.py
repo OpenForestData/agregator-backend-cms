@@ -75,7 +75,6 @@ class DataPopulator:
         :param categories_jsonized: jsonized categories list
         :return: True if success
         """
-        # TODO: should get already parsed data
         successfully_populated = False
         try:
             categories = json.loads(categories_jsonized)
@@ -85,7 +84,8 @@ class DataPopulator:
                 if category['name'] not in agregator_categories_names:
                     AgregatorCategory.objects.create(dataverse_id=category['id'],
                                                      friendly_name=category['friendly_name'],
-                                                     name=category['name'])
+                                                     name=category['name'],
+                                                     description=category['description'])
             successfully_populated = True
         except Exception as ex:
             print(ex)
