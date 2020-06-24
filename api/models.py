@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 
@@ -91,6 +93,9 @@ class AgregatorCategory(models.Model):
     friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
     description = HTMLField(null=True, blank=True)
     name = models.CharField(max_length=120, verbose_name="Name", unique=True)
+    dv_name = models.CharField(max_length=120, verbose_name="DvName", unique=True)
+    publication_date = models.CharField(max_length=10, verbose_name="Data publikacji")
+    dv_affiliation = models.CharField(max_length=120, verbose_name="Dataverse Affiliation")
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")
 
@@ -100,6 +105,3 @@ class AgregatorCategory(models.Model):
 
     def __str__(self):
         return self.friendly_name
-
-
-

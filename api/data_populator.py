@@ -85,7 +85,10 @@ class DataPopulator:
                     AgregatorCategory.objects.create(dataverse_id=category['id'],
                                                      friendly_name=category['friendly_name'],
                                                      name=category['name'],
-                                                     description=category['description'])
+                                                     description=category['description'],
+                                                     dv_affiliation=category['dvAffiliation'],
+                                                     dv_name=category['dvName'],
+                                                     publication_date=category['publicationDate'])
             successfully_populated = True
         except Exception as ex:
             print(ex)

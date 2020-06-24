@@ -85,7 +85,10 @@ def get_categories_fields_list(request):
             'name': category.name,
             'friendly_name': category.friendly_name,
             'id': category.id,
-            'description': category.description
+            'description': category.description,
+            'dvName': category.dv_name,
+            'publicationDate': category.publication_date,
+            'dvAffiliation': category.dv_affiliation
         }
     return JsonResponse(public_categories, safe=False)
 
