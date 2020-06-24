@@ -37,7 +37,6 @@ class DataPopulator:
                         friendly_name=field_data['displayName'],
                         title=field_data['title'],
                         type=field_data['type'],
-                        watermark=field_data['watermark'],
                         description=field_data['description'],
                         filter_group=filter_group,
                         public=False
@@ -62,7 +61,6 @@ class DataPopulator:
                         friendly_name=field_data['displayName'],
                         title=field_data['title'],
                         type=field_data['type'],
-                        watermark=field_data['watermark'],
                         description=field_data['description'],
                         filter_group=filter_group
                     )
