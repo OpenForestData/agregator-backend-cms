@@ -25,6 +25,7 @@ djangocms-video==2.2.0
 easy-thumbnails==2.7
 html5lib==1.0.1
 Pillow==7.0.0
+psycopg2==2.8.5
 pytz==2019.3
 six==1.13.0
 sqlparse==0.3.0
