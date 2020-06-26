@@ -8,7 +8,7 @@ BASIC_FILTERS = [{
 }, {
     'name': "citation", 'friendly_name': "Citation",
     'fields': [
-        {'name': "dateRangeTest", 'displayName': "Date Range Test", 'title': "Date Range Test",
+        {'name': "dwcModified", 'displayName': "Date Range Test", 'title': "Date Range Test",
          'type': "DATERANGE", 'description': "Date range Description"},
         {'name': "textInput", 'displayName': "Text test", 'title': "Text Test",
          'type': "TEXT", 'description': "Date range Description"}
