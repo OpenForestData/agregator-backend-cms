@@ -6,12 +6,10 @@ BASIC_FILTERS = [{
         {'name': "geographicBoundingBox", 'displayName': "Geographic Bounding Box", 'title': "Geographic Bounding Box",
          'type': "MAP", 'description': "Description"}],
 }, {
-    'name': "citation", 'friendly_name': "Citation",
+    'name': "darwincore", 'friendly_name': "Darwin Core Metadata",
     'fields': [
-        {'name': "dwcModified", 'displayName': "Date Range Test", 'title': "Date Range Test",
+        {'name': "dwcEventTime", 'displayName': "Date Range Test", 'title': "Date Range Test",
          'type': "DATERANGE", 'description': "Date range Description"},
-        {'name': "textInput", 'displayName': "Text test", 'title': "Text Test",
-         'type': "TEXT", 'description': "Date range Description"}
     ],
 }]
 
