@@ -1,8 +1,11 @@
-from cms.extensions import PageExtensionAdmin
-from cms.models import Page
+from cms.admin.pageadmin import PageAdmin
+from cms.extensions import PageExtensionAdmin, TitleExtensionAdmin
+from cms.models import Page, Title
 from django.contrib import admin
 
-from page_manager.models import MetaTagsExtension, AboutUsPage
+from page_manager.form import PagePatternAdminForm
+from page_manager.models import MetaTagsExtension, AboutUsPage, PagePattern, MetaPage, MainPage, \
+    IconSpecies, FaqShort, Accordion, AccordionPage
 
 
 class MetaTagsExtensionAdmin(PageExtensionAdmin):
@@ -12,12 +15,53 @@ class MetaTagsExtensionAdmin(PageExtensionAdmin):
 admin.site.register(MetaTagsExtension, MetaTagsExtensionAdmin)
 
 
+class MetaAdmin(admin.StackedInline):
+    model = MetaPage
+
+
 class AboutUsPageAdmin(admin.ModelAdmin):
     model = AboutUsPage
 
-    def render_change_form(self, request, context, *args, **kwargs):
-        context['adminform'].form.fields['page'].queryset = Page.objects.published()
-        return super(AboutUsPageAdmin, self).render_change_form(request, context, *args, **kwargs)
-
 
 admin.site.register(AboutUsPage, AboutUsPageAdmin)
+
+
+class PagePatternAdmin(admin.TabularInline):
+    model = PagePattern
+    form = PagePatternAdminForm
+
+
+admin.site.unregister(Page)
+
+PageAdmin.inlines.append(PagePatternAdmin)
+admin.site.register(Page, PageAdmin)
+
+
+class IconSpeciesAdmin(admin.StackedInline):
+    model = IconSpecies
+
+
+class FaqShortAdmin(admin.StackedInline):
+    model = FaqShort
+    ordering = ['order']
+
+
+class MainPageAdmin(admin.ModelAdmin):
+    model = MainPage
+    inlines = [IconSpeciesAdmin, FaqShortAdmin]
+
+
+admin.site.register(MainPage, MainPageAdmin)
+
+
+class AccordionAdmin(admin.StackedInline):
+    model = Accordion
+    ordering = ['order']
+
+
+class AccordionPageAdmin(admin.ModelAdmin):
+    model = AccordionPage
+    inlines = [AccordionAdmin, ]
+
+
+admin.site.register(AccordionPage, AccordionPageAdmin)

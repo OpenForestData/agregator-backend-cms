@@ -1,5 +1,6 @@
 from cms.extensions.toolbar import ExtensionToolbar
 from cms.toolbar_pool import toolbar_pool
+from cms.utils import get_language_list
 
 from page_manager.models import MetaTagsExtension
 

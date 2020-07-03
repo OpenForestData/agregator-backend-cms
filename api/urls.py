@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import include
 
 from api import views as api_views
 
@@ -14,8 +15,12 @@ urlpatterns = [
     url(r'^register-metadata-blocks$', api_views.ragister_metadata_blocks, name="ragister_metadata_blocks"),
     # /api/v1/menu
     url(r'^menu$', api_views.menu, name="global_data"),
-    # /api/v1/page-details
-    url(r'^page-details/(?P<page_id>[0-9]+)/(?P<lang_code>[\w-]{2})$', api_views.page_details, name="page_details"),
+    # /api/v1/tree-details
+    url(r'^tree-details/(?P<page_id>[0-9]+)/(?P<lang_code>[\w-]{2})$', api_views.page_details, name="page_details"),
     # /api/v1/get-categories-fields-list
-    url(r'^get-categories$', api_views.get_categories_fields_list, name="get_categories_fields_list")
+    url(r'^get-categories$', api_views.get_categories_fields_list, name="get_categories_fields_list"),
+    # /api/v1/get-categories-fields-list
+    # url(r'^$', api_views.page_details, {'slug': ''}, name='pages-root'),
+    url(r'^blog/', include('blog.urls', namespace='blog')),
+
 ]

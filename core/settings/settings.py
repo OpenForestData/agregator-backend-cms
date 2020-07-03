@@ -130,6 +130,7 @@ MIDDLEWARE = [
 ]
 
 INSTALLED_APPS = [
+    'core',
     'djangocms_admin_style',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -169,11 +170,11 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_googlemap',
     'djangocms_video',
-    'core',
     # additional apps
     'content_manager',
     'page_manager',
-    'api'
+    'api',
+    'blog'
 ]
 
 LANGUAGES = (

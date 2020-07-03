@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load easy_thumbnails_tags %}
+{% block content %}
+    <!--
+    =============================================
+        Blog Details
+    ==============================================
+    -->
+    <div class="our-blog blog-details blog-details-fg">
+        <div class="blog-hero-banner"
+             style="background-image: url({% thumbnail article.huge_image 3000x1000 crop subject_location=article.huge_image.subject_location %});">
+            <div class="blog-custom-container">
+                <a href="#" class="date">{{ article.date|date:"d M, yy" }}</a>
+                <h1 class="blog-title">{{ article.title }}</h1>
+            </div> <!-- /.blog-custom-container -->
+        </div> <!-- /.blog-hero-banner -->
+        <div class="blog-fg-data">
+            <div class="post-data">
+                <div class="blog-custom-container">
+                    <div class="custom-container-bg">
+                        {{ article.content|safe }}
+                    </div> <!-- /.custom-container-bg -->
+                </div> <!-- /.blog-custom-container -->
+                {% if article.movie_youtube_link and article.movie_image %}
+                    <div class="video-banner-blog"
+                         style="background-image: url('{% thumbnail article.movie_image 2500x1406 crop subject_location=article.huge_image.subject_location %}');">
+                        <a data-fancybox="" href="{{ article.movie_youtube_link }}"
+                           class="fancybox video-button"><i
+                                class="flaticon-play-button-2"></i></a>
+                    </div> <!-- /.video-banner-blog -->
+                    <div class="blog-custom-container">
+                        <div class="custom-container-bg">
+                            {{ article.content2 }}
+                        </div> <!-- /.custom-container-bg -->
+                    </div> <!-- /.blog-custom-container -->
+                {% endif %}
+            </div> <!-- /.post-data -->
+
+            <div class="blog-custom-container">
+                <div class="custom-container-bg">
+                    <div class="post-tag-area d-md-flex justify-content-between align-items-center pt-50">
+                        <ul class="tags">
+                            <li>Kierunki:</li>
+                            {% for keyword in article.keywords.all %}
+                                <li><a href="{{ keyword.get_absolute_url }}">{{ keyword.title }},</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="share-icon">
+                            <li>Udostępnij:</li>
+                            <li><a target="_blank"
+                                   href="https://www.facebook.com/sharer/sharer.php?u=https://flyup.pro{{ article.get_absolute_url }}"><i
+                                    class="fab fa-facebook"
+                                    aria-hidden="true"></i></a></li>
+                            <li><a target="_blank"
+                                   href="https://twitter.com/home?status=https://flyup.pro{{ article.get_absolute_url }}"><i
+                                    class="fab fa-twitter"
+                                    aria-hidden="true"></i></a></li>
+                            <li>
+                                <a target="_blank"
+                                   href="https://www.linkedin.com/shareArticle?mini=true&url=https://flyup.pro{{ article.get_absolute_url }}"><i
+                                        class="fab fa-linkedin"
+                                        aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div> <!-- /.post-tag-area -->
+                </div> <!-- /.custom-container-bg -->
+            </div> <!-- /.blog-custom-container -->
+        </div> <!-- /.blog-fg-data -->
+    </div> <!-- /.our-blog -->
+
+
+{% endblock %}
+

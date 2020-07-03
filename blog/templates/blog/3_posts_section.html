@@ -1,0 +1,34 @@
+{% load easy_thumbnails_tags %}
+<!--
+=============================================
+    ARCH Blog
+==============================================
+-->
+<div id="LastBlogPosts" class="arch-blog">
+    <div class="container">
+        <div class="d-lg-flex justify-content-between align-items-center pb-30">
+            <div class="theme-title-one arch-title hide-pr">
+                <h2 class="main-title">Najnowsze artykuły<b class="line"></b></h2>
+            </div>
+            <a href="{% url 'blog:index' %}" class="btn draw"><span>Więcej</span></a>
+        </div>
+
+        <div class="row">
+            {% for post in last_posts %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-post">
+                        <div class="img"><img
+                                src="{% thumbnail post.image_in_list 370x225 crop subject_location=article.image_in_list.subject_location %}"
+                                alt="{{ article.image_in_list.alt }}"></div>
+                        <div class="post">
+                            <a href="{{ post.get_absolute_url }}" class="date font-lato">{{ post.date|date:"d M, yy" }}</a>
+                            <h4 class="title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+                            <a href="{{ post.get_absolute_url }}" class="line-button-three read-more">Czytaj</a>
+                        </div> <!-- /.post -->
+                    </div> <!-- /.blog-post -->
+                </div>
+            {% endfor %}
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.arch-blog -->
+
