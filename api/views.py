@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from filer.models import Image
 
 from api.data_populator import DataPopulator
+from api.initialization_api.initialize_api import create_basic_templates_data
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
 from menus.menu_pool import menu_pool
 
@@ -51,6 +52,7 @@ def menu(request):
     :param request: request
     :return: Json data
     """
+
     response = {
         'menu': {}
     }
@@ -85,7 +87,7 @@ def page_details(request, slug):
 
     if not page:
         # raise 404
-        _handle_no_page(request)
+        return HttpResponse(status=404, content='Page not Found')
 
     request.current_page = page
 

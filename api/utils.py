@@ -1,10 +1,12 @@
 import json
 
-from page_manager.models import MainPage, AccordionPage, AboutUsPage
+from cms.models import Page
+
+from page_manager.models import MainPage, AccordionPage, AboutUsPage, PagePattern
 
 
 def get_proper_template_info(page):
-    template = page.extended_fields.first()
+    template = page.
     if template:
         if not template.about_us_id == None:
             return list(AboutUsPage.objects.filter(pk=template.about_us_id).values())

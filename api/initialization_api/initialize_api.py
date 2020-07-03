@@ -57,9 +57,7 @@ def create_static_basic_filters_fields():
 
 
 def create_basic_templates_data():
-    page = create_page('Test Akordion', 'fullwidth.html', 'pl', 'Test')
-    page.publish('pl')
-
+    page = create_page('Test Akordion', 'fullwidth.html', 'pl', 'Test Akordion')
     accordion_page = AccordionPage(**{
         'title': "Test",
         'title_seo': "Test seo",
@@ -79,10 +77,12 @@ def create_basic_templates_data():
 
         })
 
-    PagePattern.objects.create(page=page, accordion=accordion_page)
+    page_pattern = PagePattern.objects.create(page=page, accordion=accordion_page)
+    page_pattern.save()
+    page.publish(language='pl')
 
-    page = create_page('Test O nas', 'fullwidth.html', 'pl', 'Test')
-    page.publish('pl')
+
+    page = create_page('Test O nas', 'fullwidth.html', 'pl', 'Test o nas')
 
     about_us_page = AboutUsPage(**{
         'title': "Test",
@@ -95,9 +95,10 @@ def create_basic_templates_data():
     })
     about_us_page.save()
     PagePattern.objects.create(page=page, about_us=about_us_page)
+    page.publish(language='pl')
 
-    page = create_page('Test Strona główna', 'fullwidth.html', 'pl', 'Test')
-    page.publish('pl')
+
+    page = create_page('Test Strona główna', 'fullwidth.html', 'pl', 'Test strona glowna')
 
     main_page = MainPage(**{
         'title': "Test",
@@ -126,7 +127,7 @@ def create_basic_templates_data():
         FaqShort.objects.create(main_page=main_page, title=f'test{_}')
 
     PagePattern.objects.create(page=page, main=main_page)
-
+    page.publish(language='pl')
 
 def create_basic_articles_and_keyword():
     for _ in range(1, 30):
