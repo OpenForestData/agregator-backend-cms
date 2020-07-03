@@ -9,8 +9,10 @@ from blog.models import Article, BlogFront, BlogKeword
 
 def detail(request, slug):
     try:
-        article = list(Article.objects.filter(slug=slug).values())
-        return JsonResponse({'article': article, 'current_page': article})
+        articles = Article.objects.filter(slug=slug).values()
+        article = Article.objects.filter(slug=slug).first()
+        return JsonResponse({'article': list(articles), 'current_page': article, 'url': article.get_absolute_url()},
+                            safe=False)
     except Exception as ex:
         print(str(ex))
     return redirect(reverse('blog:index'))
@@ -18,7 +20,7 @@ def detail(request, slug):
 
 def latest(request):
     article = Article.objects.all().order_by('date').first()
-    return redirect(reverse('blog:detail', kwargs={'slug': article.slug}))
+    return redirect(reverse('blog:detail', kwargs={'slug': article.slug}), safe=False)
 
 
 def index(request):
@@ -34,4 +36,4 @@ def keyword(request, slug):
     articles = list(all_articles.filter(keywords=blog_keyword).order_by('date').values())
     current_page = list(BlogFront.objects.all().values())
     keywords = list(BlogKeword.objects.all())
-    return JsonResponse({'articles': articles, 'current_page': current_page, 'keywords': keywords})
+    return JsonResponse({'articles': articles, 'current_page': current_page, 'keywords': keywords}, safe=False)
