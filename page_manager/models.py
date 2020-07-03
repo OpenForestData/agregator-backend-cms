@@ -109,7 +109,5 @@ class PagePattern(models.Model):
                              editable=False, related_name='extended_fields', on_delete=models.CASCADE)
     about_us = models.OneToOneField(AboutUsPage, unique=True, verbose_name="Szablon o Nas", related_name='about_us',
                                     on_delete=models.CASCADE, null=True, blank=True)
-    main = models.OneToOneField(MainPage, unique=True, verbose_name="Szablon Strona Główna", related_name='about_us',
-                                on_delete=models.CASCADE, null=True, blank=True)
     accordion = models.OneToOneField(AccordionPage, unique=True, verbose_name="Szablon z Akordionami",
                                      related_name="accordion", on_delete=models.CASCADE, null=True, blank=True)

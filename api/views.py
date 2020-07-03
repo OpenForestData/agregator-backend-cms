@@ -16,6 +16,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlquote
 from django.views.decorators.csrf import csrf_exempt
+from easy_thumbnails.files import get_thumbnailer
 from filer.models import Image
 
 from api.data_populator import DataPopulator
@@ -25,7 +26,7 @@ from menus.menu_pool import menu_pool
 
 from api.utils import get_proper_template_info
 from core.settings import CMS_LANGUAGES
-from page_manager.models import PagePattern, AboutUsPage, AccordionPage, Accordion
+from page_manager.models import PagePattern, AboutUsPage, AccordionPage, Accordion, MainPage, IconSpecies, FaqShort
 
 
 def facet_list(request):
@@ -68,7 +69,8 @@ def menu(request):
                 'title': page.title,
                 'attr': page.attr,
                 'parent_id': page.parent_id,
-                'url': '/api/v1/pages?slug=' + page.get_absolute_url(),
+                'url': 'pages?slug=' + page.get_absolute_url(),
+                'slug': page.path
             })
     return JsonResponse(response, safe=False)
 
@@ -230,6 +232,43 @@ def ragister_metadata_blocks(request):
             except Exception as ex:
                 print(ex)
     return HttpResponse('Something went wrong', status=400)
+
+
+def home(request):
+    main_page = MainPage.objects.first()
+    try:
+        options = {'size': (1200, 630), 'crop': True}
+        og_image_thumb_url = get_thumbnailer(main_page.og_image).get_thumbnail(options).url
+    except Exception as ex:
+        og_image_thumb_url = ""
+    try:
+        options = {'size': (1680, 900), 'crop': True}
+        mobile_app_image = get_thumbnailer(main_page.mobile_app_image).get_thumbnail(options).url
+    except Exception:
+        mobile_app_image = ""
+    return JsonResponse({
+        'title_seo': main_page.title_seo,
+        'description': main_page.description,
+        'keywords_seo': main_page.keywords_seo,
+        'author': main_page.author,
+        'og_type': main_page.og_type,
+        'og_image': og_image_thumb_url,
+        'title_slider': main_page.title_slider,
+        'title_slider_small': main_page.title_slider_small,
+        'contact_content': main_page.contact_content,
+        'youtube_title': main_page.youtube_title,
+        'youtube_link': main_page.youtube_link,
+        'youtube_mobie_text': main_page.youtube_mobie_text,
+        'mobile_app_title': main_page.mobile_app_title,
+        'mobile_app_content': main_page.mobile_app_content,
+        'mobile_app_image': mobile_app_image,
+        'mobile_app_cta_link': main_page.mobile_app_cta_link,
+        'mobile_app_cta_text': main_page.mobile_app_cta_text,
+        'categories': [{'title': category.title, 'image': category.image} for category in
+                       IconSpecies.objects.filter(main_page=main_page).order_by('order')],
+        'faqs': [{'title': faq.title, 'url': faq.anchor} for faq in
+                 FaqShort.objects.filter(main_page=main_page).order_by('order')]
+    }, safe=False)
 
 #
 # def initialize_static_filters():

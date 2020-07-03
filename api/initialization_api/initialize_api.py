@@ -81,7 +81,6 @@ def create_basic_templates_data():
     page_pattern.save()
     page.publish(language='pl')
 
-
     page = create_page('Test O nas', 'fullwidth.html', 'pl', 'Test o nas')
 
     about_us_page = AboutUsPage(**{
@@ -96,9 +95,6 @@ def create_basic_templates_data():
     about_us_page.save()
     PagePattern.objects.create(page=page, about_us=about_us_page)
     page.publish(language='pl')
-
-
-    page = create_page('Test Strona główna', 'fullwidth.html', 'pl', 'Test strona glowna')
 
     main_page = MainPage(**{
         'title': "Test",
@@ -126,8 +122,6 @@ def create_basic_templates_data():
     for _ in range(1, 5):
         FaqShort.objects.create(main_page=main_page, title=f'test{_}')
 
-    PagePattern.objects.create(page=page, main=main_page)
-    page.publish(language='pl')
 
 def create_basic_articles_and_keyword():
     for _ in range(1, 30):

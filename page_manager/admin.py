@@ -50,6 +50,18 @@ class MainPageAdmin(admin.ModelAdmin):
     model = MainPage
     inlines = [IconSpeciesAdmin, FaqShortAdmin]
 
+    def has_add_permission(self, request):
+        MAX_OBJECTS = 1
+        if self.model.objects.count() >= MAX_OBJECTS:
+            return False
+        return super().has_add_permission(request)
+
+    def has_delete_permission(self, request, obj=None):
+        MAX_OBJECTS = 1
+        if self.model.objects.count() >= MAX_OBJECTS:
+            return False
+        return super().has_delete_permission(request)
+
 
 admin.site.register(MainPage, MainPageAdmin)
 
