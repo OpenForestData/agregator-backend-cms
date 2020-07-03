@@ -37,7 +37,8 @@ def detail(request, slug):
                 'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url()} for keyword in
                              article.keywords.all()],
                 'movie_youtube_link': article.movie_youtube_link,
-                'url': article.get_absolute_url()
+                'url': article.get_absolute_url(),
+                'slug': article.slug
             })
         return JsonResponse({'article': articles},
                             safe=False)
@@ -88,7 +89,8 @@ def index(request):
             'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url()} for keyword in
                          article.keywords.all()],
             'movie_youtube_link': article.movie_youtube_link,
-            'url': article.get_absolute_url()
+            'url': article.get_absolute_url(),
+            'slug': article.slug
         })
 
     return JsonResponse({'articles': articles, 'current_page': current_page, 'keywords': keywords}, safe=False)
@@ -124,7 +126,8 @@ def keyword(request, slug):
             'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url()} for keyword in
                          article.keywords.all()],
             'movie_youtube_link': article.movie_youtube_link,
-            'url': article.get_absolute_url()
+            'url': article.get_absolute_url(),
+            'slug': article.slug
         })
     current_page = list(BlogFront.objects.all().values())
     keywords_set = BlogKeword.objects.all()
