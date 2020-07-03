@@ -1,5 +1,6 @@
 import json
 
+from cms.api import create_page
 from cms.cms_menus import CMSMenu
 from cms.models import Page, TreeNode, LanguageError, settings, get_cms_setting
 from cms.page_rendering import render_page, _render_welcome_page, _handle_no_page, render_object_structure
@@ -15,6 +16,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlquote
 from django.views.decorators.csrf import csrf_exempt
+from filer.models import Image
 
 from api.data_populator import DataPopulator
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
@@ -22,6 +24,7 @@ from menus.menu_pool import menu_pool
 
 from api.utils import get_proper_template_info
 from core.settings import CMS_LANGUAGES
+from page_manager.models import PagePattern, AboutUsPage, AccordionPage, Accordion
 
 
 def facet_list(request):
@@ -51,6 +54,7 @@ def menu(request):
     response = {
         'menu': {}
     }
+
     for lang in CMS_LANGUAGES[1]:
         lang_code = lang['code']
         response['menu'][lang_code] = []

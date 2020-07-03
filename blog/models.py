@@ -43,11 +43,10 @@ class BlogKeword(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return 'https://flyup.pro' + reverse('blog:keyword', kwargs={'slug': self.slug})
+        return reverse('api:blog:keyword', kwargs={'slug': self.slug})
 
 
 class Article(models.Model):
-    popular = models.BooleanField(default=False, verbose_name="W części: Popularne")
     title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
                                  blank=True)
     description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
@@ -62,7 +61,7 @@ class Article(models.Model):
                                null=True, blank=True, related_name='article_og_image')
 
     # thumbnail
-    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga i og", on_delete=models.CASCADE,
+    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga", on_delete=models.CASCADE,
                                     null=True, blank=True, related_name='image_in_list')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
@@ -87,7 +86,7 @@ class Article(models.Model):
         return ""
 
     def get_absolute_url(self):
-        return reverse('blog:detail', kwargs={'slug': self.slug})
+        return reverse('api:blog:detail', kwargs={'slug': self.slug})
 
     def personalize(self, text, name):
         return str(text).replace('{imie}', f'<strong>{name}</strong>')

@@ -79,14 +79,14 @@ class IconSpecies(models.Model):
     title = models.CharField(max_length=120, verbose_name="Nazwa Gatunku")
     image = FilerImageField(verbose_name="Miniatura prezentująca gatunek", on_delete=models.CASCADE,
                             null=True, blank=True, related_name='species_image')
-    order = models.IntegerField(max_length=10, verbose_name="Kolejność")
+    order = models.IntegerField(max_length=10, default=1, verbose_name="Kolejność")
 
 
 class FaqShort(models.Model):
     main_page = models.ForeignKey(MainPage, related_name="faq_shorts", on_delete=models.CASCADE)
     title = models.CharField(max_length=120, verbose_name="Tytuł/Pytanie")
-    anchor = models.CharField(max_length=500, verbose_name="Link do przekierowania po kliknięciu")
-    order = models.IntegerField(max_length=10, verbose_name="Kolejność")
+    anchor = models.CharField(max_length=500, default="#", verbose_name="Link do przekierowania po kliknięciu")
+    order = models.IntegerField(max_length=10, default="1", verbose_name="Kolejność")
 
 
 # accordion template
@@ -101,7 +101,7 @@ class Accordion(models.Model):
     accordion_page = models.ForeignKey(AccordionPage, related_name="accordion_page", on_delete=models.CASCADE)
     title = models.CharField(max_length=120, verbose_name="Tytuł")
     content = HTMLField(verbose_name="Content wpisu")
-    order = models.IntegerField(max_length=10, verbose_name="Kolejność")
+    order = models.IntegerField(max_length=10, default=1, verbose_name="Kolejność")
 
 
 class PagePattern(models.Model):
