@@ -20,7 +20,7 @@ class DataPopulator:
         all_filter_groups_names = [filter_group['name'] for filter_group in FilterGroup.objects.all().values('name')]
         al_filter_fields_names = [filter_field['field_name'] for filter_field in
                                   FilterField.objects.all().values('field_name')]
-
+        wrong_names = ['taxonomicCoverage']
         for metadata_name, metadata_value in metadata_blocks.items():
             if metadata_value['name'] not in all_filter_groups_names:
                 filter_group = FilterGroup.objects.create(
@@ -31,16 +31,17 @@ class DataPopulator:
                 filter_group = FilterGroup.objects.get(name=metadata_value['name'])
             for _, field_data in metadata_value['fields'].items():
                 if field_data['name'] not in al_filter_fields_names:
-                    # TODO: delete on production
-                    FilterField.objects.create(
-                        field_name=field_data['name'],
-                        friendly_name=field_data['displayName'],
-                        title=field_data['title'],
-                        type=field_data['type'],
-                        description=field_data['description'],
-                        filter_group=filter_group,
-                        public=False
-                    )
+                    if not field_data['name'] in wrong_names:
+                        # TODO: delete on production
+                        FilterField.objects.create(
+                            field_name=field_data['name'],
+                            friendly_name=field_data['displayName'],
+                            title=field_data['title'],
+                            type=field_data['type'],
+                            description=field_data['description'],
+                            filter_group=filter_group,
+                            public=False
+                        )
         all_advanced_search_filter_groups_names = [filter_group['name'] for filter_group in
                                                    AdvancedSearchFilterGroup.objects.all().values('name')]
         al_advanced_search_filter_fields_names = [filter_field['field_name'] for filter_field in

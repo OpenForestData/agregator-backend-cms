@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from easy_thumbnails.files import get_thumbnailer
 from blog.models import Article, BlogFront, BlogKeword
+from django.core.paginator import Paginator
 
 
 def detail(request, slug):
@@ -51,6 +52,8 @@ def latest(request):
 
 
 def index(request):
+    page = request.GET.get('page', 1)
+    limit = request.GET.get('limit', 6)
     current_page = list(BlogFront.objects.all().values())
     keywords_set = BlogKeword.objects.all()
     keywords = []
@@ -91,8 +94,17 @@ def index(request):
             'url': article.get_absolute_url(),
             'slug': article.slug
         })
-
-    return JsonResponse({'articles': articles, 'current_page': current_page, 'keywords': keywords}, safe=False)
+    pagination = Paginator(articles, limit)
+    page = pagination.page(page)
+    paginator = page.paginator
+    return JsonResponse(
+        {
+            'articles': page.object_list,
+            'offset': {'count': paginator.count, 'per_page': paginator.per_page, 'num_pages': paginator.num_pages},
+            'current_page': current_page,
+            'keywords': keywords
+        },
+        safe=False)
 
 
 def keyword(request, slug):
