@@ -60,6 +60,7 @@ Build docker dev image:
     image: 
         name: gcr.io/kaniko-project/executor:debug
         entrypoint: [""]
+    before_script: []
     stage: build
     before_script:
         - echo "pass" 
@@ -73,6 +74,7 @@ Build docker master image:
     image: 
         name: gcr.io/kaniko-project/executor:debug
         entrypoint: [""]
+    before_script: []
     stage: build
     before_script:
         - echo "pass"    
