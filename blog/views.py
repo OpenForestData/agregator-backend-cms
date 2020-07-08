@@ -1,9 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect
-
 from django.urls import reverse
 from easy_thumbnails.files import get_thumbnailer
-
 from blog.models import Article, BlogFront, BlogKeword
 
 
@@ -43,7 +41,7 @@ def detail(request, slug):
         return JsonResponse({'article': article},
                             safe=False)
     except Exception as ex:
-        print(str(ex))
+        print(ex)
     return redirect(reverse('blog:index'))
 
 
@@ -107,11 +105,13 @@ def keyword(request, slug):
         try:
             image_in_list_thumb_url = get_thumbnailer(article.image_in_list).get_thumbnail(options).url
         except Exception as ex:
+            print(ex)
             image_in_list_thumb_url = ""
         options = {'size': (1200, 630), 'crop': True}
         try:
             og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
         except Exception as ex:
+            print(ex)
             og_image_thumb_url = ""
         articles.append({
             'title_seo': article.title_seo,

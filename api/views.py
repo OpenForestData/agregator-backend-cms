@@ -1,5 +1,5 @@
 import json
-from cms.models import TreeNode, LanguageError, settings, get_cms_setting
+from cms.models import TreeNode, LanguageError, settings
 from cms.page_rendering import _render_welcome_page, _handle_no_page
 from cms.toolbar.utils import get_toolbar_from_request
 from cms.utils import get_current_site, get_language_list, get_language_from_request
@@ -236,7 +236,7 @@ def home(request):
     try:
         options = {'size': (1680, 900), 'crop': True}
         mobile_app_image = get_thumbnailer(main_page.mobile_app_image).get_thumbnail(options).url
-    except Exception:
+    except Exception as ex:
         print(ex)
         mobile_app_image = ""
     return JsonResponse({

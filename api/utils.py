@@ -31,13 +31,14 @@ def get_proper_template_info(page):
                 'content': about_page.content,
             }
 
-        if not template.accordion_id == None:
+        if  template.accordion_id is None:
             accordion_page = AccordionPage.objects.filter(pk=template.accordion_id).first()
 
             options = {'size': (1200, 630), 'crop': True}
             try:
                 og_image_thumb_url = get_thumbnailer(accordion_page.og_image).get_thumbnail(options).url
             except Exception as ex:
+                print(ex)
                 og_image_thumb_url = ""
             return {
                 'title_seo': accordion_page.title_seo,

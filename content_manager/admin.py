@@ -1,9 +1,6 @@
-from cms.admin.pageadmin import PageAdmin
 from cms.extensions import TitleExtensionAdmin
-from cms.models.pagemodel import Page
 from django.contrib import admin
 
-# Register your models here.
 from content_manager.models import Slide, ExtendedPage
 
 
