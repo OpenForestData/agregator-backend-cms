@@ -1,6 +1,7 @@
 image: python:3.6-slim-buster
 
 stages:
+    - sonarqube
     - code checks
     - build
 
@@ -9,6 +10,15 @@ before_script:
     - apt install git python3-dev libpq-dev libsasl2-dev build-essential gcc -y
     - pip install -U pip
     - pip install --ignore-installed -r requirements.txt
+
+sonarqube:
+    image: sonarsource/sonar-scanner-cli
+    stage: sonarqube
+    before_script: []
+    script:
+        - sonar-scanner Dsonar.projectKey=agregator_backend_cms Dsonar.sources=. Dsonar.host.url=https://sonarqube.whiteaster.com Dsonar.login=d17a28ac14f3830998de2cba5c674006a34e8831      
+    only:
+        - master
 
 PyLint:
     stage: code checks
