@@ -1,8 +1,5 @@
-import json
-
 from easy_thumbnails.files import get_thumbnailer
-
-from page_manager.models import MainPage, AccordionPage, AboutUsPage, Accordion, IconSpecies, FaqShort
+from page_manager.models import AccordionPage, AboutUsPage, Accordion
 
 
 def get_proper_template_info(page):
@@ -15,12 +12,13 @@ def get_proper_template_info(page):
         if str(page_pattern.page) == str(page):
             template = page_pattern
     if template:
-        if not template.about_us_id == None:
+        if template.about_us_id is None:
             about_page = AboutUsPage.objects.filter(pk=template.about_us_id).first()
             options = {'size': (1200, 630), 'crop': True}
             try:
                 og_image_thumb_url = get_thumbnailer(about_page.og_image).get_thumbnail(options).url
             except Exception as ex:
+                print(ex)
                 og_image_thumb_url = ""
             return {
                 'title_seo': about_page.title_seo,
@@ -53,6 +51,6 @@ def get_proper_template_info(page):
                 'accordions': [{'title': accordion.title, 'content': accordion.content} for accordion in
                                Accordion.objects.filter(accordion_page=accordion_page).order_by('order')]
             }
-        if not template.main_id == None:
+        if template.main_id is None:
             pass
     return {}

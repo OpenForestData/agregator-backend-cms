@@ -1,7 +1,4 @@
-from xmlrpc.client import DateTime
-
 from cms.api import create_page
-from cms.models import Page
 from django.utils.text import slugify
 
 from api.models import FilterGroup, FilterField, AdvancedSearchFilterGroup, AdvancedSearchFilterField
@@ -23,37 +20,27 @@ BASIC_FILTERS = [{
 
 
 def create_static_basic_filters_fields():
-    for basic_filter in BASIC_FILTERS:
-        filter_group = FilterGroup.objects.create(
-            name=basic_filter['name'],
-            friendly_name=basic_filter['friendly_name']
-        )
-        for field_data in basic_filter['fields']:
-            FilterField.objects.create(
-                field_name=field_data['name'],
-                friendly_name=field_data['displayName'],
-                title=field_data['title'],
-                type=field_data['type'],
-                description=field_data['description'],
-                filter_group=filter_group,
-                public=True
-            )
+    models_fields = {'basic': [FilterGroup, FilterField],
+                     'advanced': [AdvancedSearchFilterGroup, AdvancedSearchFilterField]}
 
-        filter_group = AdvancedSearchFilterGroup.objects.create(
-            name=basic_filter['name'],
-            friendly_name=basic_filter['friendly_name']
-        )
-        for field_data in basic_filter['fields']:
-            AdvancedSearchFilterField.objects.create(
-                field_name=field_data['name'],
-                friendly_name=field_data['displayName'],
-                title=field_data['title'],
-                type=field_data['type'],
-                description=field_data['description'],
-                filter_group=filter_group,
-                public=True
+    for field_type, models_field in models_fields.items():
+
+        for basic_filter in BASIC_FILTERS:
+            filter_group = models_field[0].objects.create(
+                name=basic_filter['name'],
+                friendly_name=basic_filter['friendly_name']
             )
-    return True
+            for field_data in basic_filter['fields']:
+                models_field[1].objects.create(
+                    field_name=field_data['name'],
+                    friendly_name=field_data['displayName'],
+                    title=field_data['title'],
+                    type=field_data['type'],
+                    description=field_data['description'],
+                    filter_group=filter_group,
+                    public=True if field_type == 'advanced' else False
+                )
+        return True
 
 
 def create_basic_templates_data():
@@ -138,8 +125,20 @@ def create_basic_articles_and_keyword():
             'keywords_seo': "Test keyword seo",
             'author': "Autor Seo",
             'og_type': 'type og seo',
-            'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
-            'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
+            'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
+            Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
+            ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
+             trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
+             Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
+             się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
+              <strong></strong> Gotowy?</p>',
+            'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
+            liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
+            oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
+            się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
+            dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
+            przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
+            dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
             'movie_youtube_link': 'https://www.youtube.com/watch?v=QcXtF8Gj_Z0',
             'slug': slugify(f'Test {_}')
         })

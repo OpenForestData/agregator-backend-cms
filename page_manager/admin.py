@@ -1,6 +1,6 @@
 from cms.admin.pageadmin import PageAdmin
-from cms.extensions import PageExtensionAdmin, TitleExtensionAdmin
-from cms.models import Page, Title
+from cms.extensions import PageExtensionAdmin
+from cms.models import Page
 from django.contrib import admin
 
 from page_manager.form import PagePatternAdminForm

@@ -66,7 +66,8 @@ class DataPopulator:
                     )
         return True
 
-    def populate_categories(self, categories_jsonized: str) -> bool:
+    @staticmethod
+    def populate_categories(categories_jsonized: str) -> bool:
         """
         Method responsible for updating all categories -
         it must only add new categories with default public status to false
@@ -91,4 +92,3 @@ class DataPopulator:
         except Exception as ex:
             print(ex)
         return successfully_populated
-

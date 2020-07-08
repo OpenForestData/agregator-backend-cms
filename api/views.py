@@ -1,32 +1,23 @@
 import json
-
-from cms.api import create_page
-from cms.cms_menus import CMSMenu
-from cms.models import Page, TreeNode, LanguageError, settings, get_cms_setting
-from cms.page_rendering import render_page, _render_welcome_page, _handle_no_page, render_object_structure
+from cms.models import TreeNode, LanguageError, settings, get_cms_setting
+from cms.page_rendering import _render_welcome_page, _handle_no_page
 from cms.toolbar.utils import get_toolbar_from_request
 from cms.utils import get_current_site, get_language_list, get_language_from_request
 from cms.utils.i18n import get_public_languages, get_redirect_on_fallback, get_default_language_for_site, \
     get_fallback_languages
 from cms.utils.page import get_page_from_request
-from cms.utils.page_permissions import user_can_change_page
 from cms.views import _clean_redirect_url
 from django.contrib.auth.views import redirect_to_login
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.utils.http import urlquote
 from django.views.decorators.csrf import csrf_exempt
 from easy_thumbnails.files import get_thumbnailer
-from filer.models import Image
-
 from api.data_populator import DataPopulator
-from api.initialization_api.initialize_api import create_basic_templates_data
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
 from menus.menu_pool import menu_pool
-
 from api.utils import get_proper_template_info
 from core.settings import CMS_LANGUAGES
-from page_manager.models import PagePattern, AboutUsPage, AccordionPage, Accordion, MainPage, IconSpecies, FaqShort
+from page_manager.models import MainPage, IconSpecies, FaqShort
 
 
 def facet_list(request):
@@ -179,7 +170,7 @@ def page_details(request, slug):
     if hasattr(request, 'toolbar'):
         request.toolbar.set_object(page)
 
-    structure_requested = get_cms_setting('CMS_TOOLBAR_URL__BUILD') in request.GET
+    # structure_requested = get_cms_setting('CMS_TOOLBAR_URL__BUILD') in request.GET
 
     return JsonResponse(get_proper_template_info(page), safe=False)
 
@@ -240,11 +231,13 @@ def home(request):
         options = {'size': (1200, 630), 'crop': True}
         og_image_thumb_url = get_thumbnailer(main_page.og_image).get_thumbnail(options).url
     except Exception as ex:
+        print(ex)
         og_image_thumb_url = ""
     try:
         options = {'size': (1680, 900), 'crop': True}
         mobile_app_image = get_thumbnailer(main_page.mobile_app_image).get_thumbnail(options).url
     except Exception:
+        print(ex)
         mobile_app_image = ""
     return JsonResponse({
         'title_seo': main_page.title_seo,

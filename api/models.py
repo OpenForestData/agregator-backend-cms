@@ -1,5 +1,3 @@
-from datetime import date
-
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 

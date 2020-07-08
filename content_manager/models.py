@@ -1,12 +1,10 @@
 from cms.extensions import TitleExtension, extension_pool
-from cms.models.pagemodel import Page
 from cms.models import CMSPlugin
-from cms.plugin_base import CMSPluginBase
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
 
-from content_manager.base_model_classess import BasicClassModel, ImageMixin
+from content_manager.base_model_classess import ImageMixin
 
 
 ################################################################################

@@ -1,7 +1,6 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import redirect
 
-# Create your views here.
 from django.urls import reverse
 from easy_thumbnails.files import get_thumbnailer
 
@@ -10,20 +9,21 @@ from blog.models import Article, BlogFront, BlogKeword
 
 def detail(request, slug):
     try:
-        articles = []
+        article = {}
         articles_queryset = Article.objects.filter(slug=slug)
         for article in articles_queryset:
             options = {'size': (1680, 900), 'crop': True}
+            image_in_list_thumb_url = ""
+            og_image_thumb_url = ""
             try:
                 image_in_list_thumb_url = get_thumbnailer(article.image_in_list).get_thumbnail(options).url
             except Exception as ex:
-                image_in_list_thumb_url = ""
-            options = {'size': (1200, 630), 'crop': True}
+                print(ex)
             try:
                 og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
             except Exception as ex:
-                og_image_thumb_url = ""
-            articles.append({
+                print(ex)
+            article = {
                 'title_seo': article.title_seo,
                 'description': article.description,
                 'keywords_seo': article.keywords_seo,
@@ -39,8 +39,8 @@ def detail(request, slug):
                 'movie_youtube_link': article.movie_youtube_link,
                 'url': article.get_absolute_url(),
                 'slug': article.slug
-            })
-        return JsonResponse({'article': articles},
+            }
+        return JsonResponse({'article': article},
                             safe=False)
     except Exception as ex:
         print(str(ex))
@@ -66,15 +66,16 @@ def index(request):
     articles = []
     for article in articles_queryset:
         options = {'size': (1680, 900), 'crop': True}
+        image_in_list_thumb_url = ""
+        og_image_thumb_url = ""
         try:
             image_in_list_thumb_url = get_thumbnailer(article.image_in_list).get_thumbnail(options).url
         except Exception as ex:
-            image_in_list_thumb_url = ""
-        options = {'size': (1200, 630), 'crop': True}
+            print(ex)
         try:
             og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
         except Exception as ex:
-            og_image_thumb_url = ""
+            print(ex)
         articles.append({
             'title_seo': article.title_seo,
             'description': article.description,
