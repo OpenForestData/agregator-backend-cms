@@ -31,7 +31,7 @@ def get_proper_template_info(page):
                 'content': about_page.content,
             }
 
-        if  template.accordion_id is None:
+        if template.accordion_id is None:
             accordion_page = AccordionPage.objects.filter(pk=template.accordion_id).first()
 
             options = {'size': (1200, 630), 'crop': True}
