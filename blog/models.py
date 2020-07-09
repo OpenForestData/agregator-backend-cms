@@ -33,7 +33,7 @@ class BlogFront(models.Model):
 
 class BlogKeword(models.Model):
     title = models.CharField(max_length=120, verbose_name="Tag", unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = "Tagi"

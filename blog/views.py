@@ -54,6 +54,7 @@ def latest(request):
 def index(request):
     page = request.GET.get('page', 1)
     limit = request.GET.get('limit', 6)
+    keywords_slug = request.get('keyword', None)
     current_page = list(BlogFront.objects.all().values())
     keywords_set = BlogKeword.objects.all()
     keywords = []
@@ -64,6 +65,9 @@ def index(request):
         })
 
     articles_queryset = Article.objects.all().order_by('date')
+    if keywords_slug:
+        blog_keyword = BlogKeword.objects.get(slug=keywords_slug)
+        articles_queryset.filter(keywords=blog_keyword).order_by('date')
     articles = []
     for article in articles_queryset:
         options = {'size': (1680, 900), 'crop': True}
