@@ -94,8 +94,8 @@ def index(request):
             'title': article.title,
             'date': article.date,
             'desc': article.desc,
-            'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url()} for keyword in
-                         article.keywords.all()],
+            'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.slug} for
+                         keyword in article.keywords.all()],
             'movie_youtube_link': article.movie_youtube_link,
             'url': article.get_absolute_url(),
             'slug': article.slug
