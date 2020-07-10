@@ -54,20 +54,22 @@ def latest(request):
 def index(request):
     page = request.GET.get('page', 1)
     limit = request.GET.get('limit', 6)
-    keywords_slug = request.get('keyword', None)
+    keywords_slug = request.GET.get('keyword', None)
     current_page = list(BlogFront.objects.all().values())
     keywords_set = BlogKeword.objects.all()
     keywords = []
     for keyword in keywords_set:
         keywords.append({
             'title': keyword.title,
-            'url': keyword.get_absolute_url()
+            'url': keyword.get_absolute_url(),
+            'slug': keyword.slug
         })
 
     articles_queryset = Article.objects.all().order_by('date')
     if keywords_slug:
-        blog_keyword = BlogKeword.objects.get(slug=keywords_slug)
-        articles_queryset.filter(keywords=blog_keyword).order_by('date')
+        blog_keyword = BlogKeword.objects.filter(slug=keywords_slug).first()
+        if blog_keyword:
+            articles_queryset = blog_keyword.get_articles()
     articles = []
     for article in articles_queryset:
         options = {'size': (1680, 900), 'crop': True}
@@ -99,11 +101,13 @@ def index(request):
             'slug': article.slug
         })
     pagination = Paginator(articles, limit)
-    page = pagination.page(page)
-    paginator = page.paginator
+    if pagination.count < int(page) or int(page) < 1:
+        page = 1
+    page_pagination = pagination.page(page)
+    paginator = page_pagination.paginator
     return JsonResponse(
         {
-            'articles': page.object_list,
+            'articles': articles,
             'offset': {'count': paginator.count, 'per_page': paginator.per_page, 'num_pages': paginator.num_pages},
             'current_page': current_page,
             'keywords': keywords

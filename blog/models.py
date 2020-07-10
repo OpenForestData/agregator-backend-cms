@@ -45,6 +45,9 @@ class BlogKeword(models.Model):
     def get_absolute_url(self):
         return reverse('api:blog:keyword', kwargs={'slug': self.slug})
 
+    def get_articles(self):
+        return self.blog_articles.all().order_by('date')
+
 
 class Article(models.Model):
     title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,

@@ -46,7 +46,15 @@ def menu(request):
     """
 
     response = {
-        'menu': {}
+        'menu': {},
+        'add_menu': [
+            {'url': 'https://onet.pl',
+             'title': 'Naukowe'},
+            {'url': 'https://onet.pl',
+             'title': 'Przestrzenne'},
+            {'url': 'https://onet.pl',
+             'title': 'Metryczne'},
+        ]
     }
 
     for lang in CMS_LANGUAGES[1]:
