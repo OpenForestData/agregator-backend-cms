@@ -107,7 +107,7 @@ def index(request):
     paginator = page_pagination.paginator
     return JsonResponse(
         {
-            'articles': articles,
+            'articles': page_pagination.object_list,
             'offset': {'count': paginator.count, 'per_page': paginator.per_page, 'num_pages': paginator.num_pages},
             'current_page': current_page,
             'keywords': keywords
