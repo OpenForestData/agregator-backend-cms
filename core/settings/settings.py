@@ -174,7 +174,8 @@ INSTALLED_APPS = [
     'content_manager',
     'page_manager',
     'api',
-    'blog'
+    'blog',
+    'news'
 ]
 
 LANGUAGES = (

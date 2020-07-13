@@ -3,6 +3,7 @@ from django.utils.text import slugify
 
 from api.models import FilterGroup, FilterField, AdvancedSearchFilterGroup, AdvancedSearchFilterField
 from blog.models import BlogKeword, Article
+from news.models import News
 from page_manager.models import AccordionPage, PagePattern, Accordion, AboutUsPage, MainPage, IconSpecies, FaqShort
 
 BASIC_FILTERS = [{
@@ -144,4 +145,31 @@ def create_basic_articles_and_keyword():
         })
         article.save()
         article.keywords.add(BlogKeword.objects.get(pk=_))
+        article.save()
+
+    for _ in range(1, 30):
+        article = News(**{
+            'title': f"Test {_}",
+            'title_seo': "Test seo",
+            'description': "Test desc seo",
+            'keywords_seo': "Test keyword seo",
+            'author': "Autor Seo",
+            'og_type': 'type og seo',
+            'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
+            Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
+            ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
+             trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
+             Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
+             się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
+              <strong></strong> Gotowy?</p>',
+            'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
+            liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
+            oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
+            się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
+            dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
+            przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
+            dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
+            'slug': slugify(f'Test {_}')
+        })
+        article.save()
         article.save()

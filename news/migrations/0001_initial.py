@@ -17,19 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='BlogKeword',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=120, unique=True, verbose_name='Tag')),
-                ('slug', models.SlugField(unique=True)),
-            ],
-            options={
-                'verbose_name': 'Tag',
-                'verbose_name_plural': 'Tagi',
-            },
-        ),
-        migrations.CreateModel(
-            name='BlogFront',
+            name='NewsFront',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=120, unique=True, verbose_name='Tytuł')),
@@ -38,16 +26,12 @@ class Migration(migrations.Migration):
                 ('keywords_seo', models.CharField(blank=True, max_length=500, null=True, verbose_name='Keywords')),
                 ('author', models.CharField(blank=True, max_length=500, null=True, verbose_name='Autor')),
                 ('og_type', models.CharField(blank=True, max_length=15, null=True, verbose_name='Og:Type - według dokumentacji: https://ogp.me/')),
-                ('image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='image_for_blog_top', to=settings.FILER_IMAGE_MODEL, verbose_name='Obrazek górny')),
-                ('og_image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='blog_index_og_image', to=settings.FILER_IMAGE_MODEL, verbose_name='Miniatura w social Media')),
+                ('image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='image_for_news_top', to=settings.FILER_IMAGE_MODEL, verbose_name='Obrazek górny')),
+                ('og_image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='news_index_og_image', to=settings.FILER_IMAGE_MODEL, verbose_name='Miniatura w social Media')),
             ],
-            options={
-                'verbose_name': 'Blog Top',
-                'verbose_name_plural': 'Blog Top',
-            },
         ),
         migrations.CreateModel(
-            name='Article',
+            name='News',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title_seo', models.CharField(blank=True, max_length=500, null=True, verbose_name='Tytuł (nadpisuje podstawowy tytuł)')),
@@ -59,15 +43,13 @@ class Migration(migrations.Migration):
                 ('date', models.DateField(auto_now_add=True, verbose_name='Data utworzenia')),
                 ('desc', djangocms_text_ckeditor.fields.HTMLField(blank=True, null=True, verbose_name='Opis do listy')),
                 ('content', djangocms_text_ckeditor.fields.HTMLField(blank=True, null=True, verbose_name='Content wpisu - <name> zostanie zamienione na imię')),
-                ('movie_youtube_link', models.CharField(blank=True, max_length=120, null=True, verbose_name='Link do filmu na YT')),
                 ('slug', models.SlugField()),
-                ('image_in_list', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='image_in_list', to=settings.FILER_IMAGE_MODEL, verbose_name='Obrazek na liście bloga')),
-                ('keywords', models.ManyToManyField(related_name='blog_articles', to='blog.BlogKeword')),
-                ('og_image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='article_og_image', to=settings.FILER_IMAGE_MODEL, verbose_name='Miniatura w social Media')),
+                ('image_in_list', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='image_in_list_news', to=settings.FILER_IMAGE_MODEL, verbose_name='Obrazek na liście bloga')),
+                ('og_image', filer.fields.image.FilerImageField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='news_og_image', to=settings.FILER_IMAGE_MODEL, verbose_name='Miniatura w social Media')),
             ],
             options={
-                'verbose_name': 'Artykuł',
-                'verbose_name_plural': 'Artykuły',
+                'verbose_name': 'News',
+                'verbose_name_plural': 'Newsy',
             },
         ),
     ]

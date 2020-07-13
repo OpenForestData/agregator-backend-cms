@@ -22,6 +22,8 @@ urlpatterns = [
     # /api/v1/get-categories-fields-list
     # url(r'^$', api_views.page_details, {'slug': ''}, name='pages-root'),
     url(r'^blog/', include('blog.urls', namespace='blog')),
+    # /api/v1/news
+    url(r'^news/', include('news.urls', namespace='news')),
     # main page
     url(r'^home$', api_views.home, name='home'),
 ]
