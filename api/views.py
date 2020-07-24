@@ -14,9 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from easy_thumbnails.files import get_thumbnailer
 from api.data_populator import DataPopulator
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup, AddMenuLinks
-from menus.menu_pool import menu_pool
 from api.utils import get_proper_template_info
-from core.settings import CMS_LANGUAGES
 from page_manager.models import MainPage, IconSpecies, FaqShort
 
 
