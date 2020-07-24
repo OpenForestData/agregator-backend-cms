@@ -42,8 +42,8 @@ def detail(request, slug):
                 'url': related.get_absolute_url(),
                 'slug': related.slug,
                 'related_posts': [],
-                'next': next_article.get_absolute_url(),
-                'prev': prev_article.get_absolute_url()
+                'next': next_article.slug,
+                'prev': prev_article.slug
             })
 
         for article in articles_queryset:

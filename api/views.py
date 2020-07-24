@@ -59,7 +59,7 @@ def menu(request):
             'id': title_page.page.id,
             'title': title_page.menu_title,
             'parent_id': title_page.page.node_id,
-            'url': 'pages?slug=/cms-api/v1/' + title_page.page.get_absolute_url(),
+            'url': f'pages?slug=/{language}/' + title_page.slug,
             'slug': title_page.slug
         })
     return JsonResponse(response, safe=False)
@@ -258,7 +258,7 @@ def home(request):
         'mobile_app_cta_text': main_page.mobile_app_cta_text,
         'categories': [{'title': category.title, 'image': category.image} for category in
                        IconSpecies.objects.filter(main_page=main_page).order_by('order')],
-        'faqs': [{'title': faq.title, 'url': faq.anchor} for faq in
+        'faqs': [{'title': faq.title, 'anchor': faq.anchor} for faq in
                  FaqShort.objects.filter(main_page=main_page).order_by('order')]
     }, safe=False)
 

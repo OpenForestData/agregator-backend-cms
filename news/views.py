@@ -62,6 +62,7 @@ def latest(request):
             og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
         except Exception as ex:
             print(ex)
+
         next_article, prev_article = article.next_prev_get()
         articles.append({
             'title_seo': article.title_seo,
@@ -76,8 +77,8 @@ def latest(request):
             'desc': article.desc,
             'url': article.get_absolute_url(),
             'slug': article.slug,
-            'next': next_article.get_absolute_url(),
-            'prev': prev_article.get_absolute_url()
+            'next': next_article.slug,
+            'prev': prev_article.slug
         })
     pagination = Paginator(articles, limit)
     if pagination.count < int(page) or int(page) < 1:
