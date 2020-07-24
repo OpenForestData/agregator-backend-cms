@@ -59,7 +59,7 @@ def menu(request):
             'id': title_page.page.id,
             'title': title_page.menu_title,
             'parent_id': title_page.page.node_id,
-            'url': 'pages?slug=' + title_page.page.get_absolute_url(),
+            'url': 'pages?slug=/cms-api/v1/' + title_page.page.get_absolute_url(),
             'slug': title_page.slug
         })
     return JsonResponse(response, safe=False)
