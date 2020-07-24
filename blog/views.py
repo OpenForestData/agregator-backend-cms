@@ -9,7 +9,43 @@ from django.core.paginator import Paginator
 def detail(request, slug):
     try:
         article = {}
+        retlated_posts = []
         articles_queryset = Article.objects.filter(slug=slug)
+        related_queryset = Article.objects.filter(keywords__in=list(articles_queryset.first().keywords.all()))
+        for related in related_queryset:
+            options = {'size': (1680, 900), 'crop': True}
+            image_in_list_thumb_url = ""
+            og_image_thumb_url = ""
+            try:
+                image_in_list_thumb_url = get_thumbnailer(related.image_in_list).get_thumbnail(options).url
+            except Exception as ex:
+                print(ex)
+            try:
+                og_image_thumb_url = get_thumbnailer(related.og_image).get_thumbnail(options).url
+            except Exception as ex:
+                print(ex)
+            next_article, prev_article = related.next_prev_get()
+            retlated_posts.append({
+                'title_seo': related.title_seo,
+                'description': related.description,
+                'keywords_seo': related.keywords_seo,
+                'author': related.author,
+                'og_type': related.og_type,
+                'og_image': og_image_thumb_url,
+                'image_in_list': image_in_list_thumb_url,
+                'title': related.title,
+                'date': related.date,
+                'content': related.content,
+                'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.slug} for
+                             keyword in related.keywords.all()],
+                'movie_youtube_link': related.movie_youtube_link,
+                'url': related.get_absolute_url(),
+                'slug': related.slug,
+                'related_posts': [],
+                'next': next_article.get_absolute_url(),
+                'prev': prev_article.get_absolute_url()
+            })
+
         for article in articles_queryset:
             options = {'size': (1680, 900), 'crop': True}
             image_in_list_thumb_url = ""
@@ -22,6 +58,7 @@ def detail(request, slug):
                 og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
             except Exception as ex:
                 print(ex)
+            next_article, prev_article = article.next_prev_get()
             article = {
                 'title_seo': article.title_seo,
                 'description': article.description,
@@ -37,13 +74,16 @@ def detail(request, slug):
                              keyword in article.keywords.all()],
                 'movie_youtube_link': article.movie_youtube_link,
                 'url': article.get_absolute_url(),
-                'slug': article.slug
+                'slug': article.slug,
+                'related_posts': [],
+                'next': next_article.get_absolute_url(),
+                'prev': prev_article.get_absolute_url()
             }
-        return JsonResponse({'article': article},
+        return JsonResponse({'article': article, 'related_posts': retlated_posts},
                             safe=False)
     except Exception as ex:
         print(ex)
-    return redirect(reverse('blog:index'))
+    return redirect(reverse('api:blog:index'))
 
 
 def latest(request):

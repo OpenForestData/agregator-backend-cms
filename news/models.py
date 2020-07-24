@@ -38,6 +38,19 @@ class News(models.Model):
     def get_absolute_url(self):
         return reverse('api:news:detail', kwargs={'slug': self.slug})
 
+    def next_prev_get(self):
+        qset = list(self.__class__.objects.all().order_by('date'))
+        obj_index = qset.index(self)
+        try:
+            previous = qset[obj_index - 1]
+        except IndexError:
+            previous = None
+        try:
+            next = qset[obj_index + 1]
+        except IndexError:
+            next = None
+        return previous, next
+
 
 class NewsFront(models.Model):
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)

@@ -1,10 +1,12 @@
 from cms.api import create_page
 from django.utils.text import slugify
 
-from api.models import FilterGroup, FilterField, AdvancedSearchFilterGroup, AdvancedSearchFilterField
+from api.models import FilterGroup, FilterField, AdvancedSearchFilterGroup, AdvancedSearchFilterField, AddMenuLinks
 from blog.models import BlogKeword, Article
 from news.models import News
 from page_manager.models import AccordionPage, PagePattern, Accordion, AboutUsPage, MainPage, IconSpecies, FaqShort
+
+BASIC_LANGUAGES_TO_INITIALIZE_DATA = ['pl', 'en']
 
 BASIC_FILTERS = [{
     'name': "geospatial", 'friendly_name': "Geo Spatial",
@@ -108,7 +110,7 @@ def create_basic_templates_data():
         IconSpecies.objects.create(main_page=main_page, title=f'test{_}')
 
     for _ in range(1, 5):
-        FaqShort.objects.create(main_page=main_page, title=f'test{_}')
+        FaqShort.objects.create(main_page=main_page, title=f'test{_}', anchor=f'{_}')
 
 
 def create_basic_articles_and_keyword():
@@ -172,4 +174,10 @@ def create_basic_articles_and_keyword():
             'slug': slugify(f'Test {_}')
         })
         article.save()
-        article.save()
+
+
+def create_small_add_menu():
+    for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
+        for i in range(1, 3):
+            menu_link = AddMenuLinks.objects.create(name=f"Test {i} {lang}", url="#", language=lang)
+            print(menu_link.name)

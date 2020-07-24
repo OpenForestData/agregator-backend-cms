@@ -1,6 +1,8 @@
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 
+from core.base_models import LangChooseMixin
+
 
 class AdvancedSearchFilterGroup(models.Model):
     """
@@ -103,3 +105,20 @@ class AgregatorCategory(models.Model):
 
     def __str__(self):
         return self.friendly_name
+
+
+class AddMenuLinks(LangChooseMixin):
+    """
+    Model responsible for creating menu of tabs in
+    add resource small menu
+    """
+    name = models.CharField(max_length=120, verbose_name="Name", unique=True)
+    url = models.CharField(max_length=220, verbose_name="Link")
+    order = models.IntegerField(default=1, verbose_name="Kolejność")
+
+    class Meta:
+        verbose_name = "Dodanie resource (opcje)"
+        verbose_name_plural = "Dodanie resourców (opcje)"
+
+    def __str__(self):
+        return self.name

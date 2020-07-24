@@ -93,3 +93,16 @@ class Article(models.Model):
 
     def personalize(self, text, name):
         return str(text).replace('{imie}', f'<strong>{name}</strong>')
+
+    def next_prev_get(self):
+        qset = list(self.__class__.objects.all().order_by('date'))
+        obj_index = qset.index(self)
+        try:
+            previous = qset[obj_index - 1]
+        except IndexError:
+            previous = None
+        try:
+            next = qset[obj_index + 1]
+        except IndexError:
+            next = None
+        return previous, next

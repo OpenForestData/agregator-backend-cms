@@ -20,6 +20,7 @@ urlpatterns = [
     # /api/v1/get-categories-fields-list
     url(r'^get-categories$', api_views.get_categories_fields_list, name="get_categories_fields_list"),
     # /api/v1/get-categories-fields-list
+    url(r'^faq$', api_views.get_faq, name="get_faq"),
     # url(r'^$', api_views.page_details, {'slug': ''}, name='pages-root'),
     url(r'^blog/', include('blog.urls', namespace='blog')),
     # /api/v1/news

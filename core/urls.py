@@ -13,14 +13,16 @@ from django.views.static import serve
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^cms-api/v1/', include('api.urls')),
+
     url(r'^sitemap\.xml$', sitemap,
         {'sitemaps': {'cmspages': CMSSitemap}})
 ]
 
 urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),  # NOQA
+    url(r'^cms-api/v1/', include('api.urls')),
     url(r'^', include('api.cms_urls')),
+
 )
 
 # This is only needed when using runserver.

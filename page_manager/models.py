@@ -85,6 +85,7 @@ class IconSpecies(models.Model):
 class FaqShort(models.Model):
     main_page = models.ForeignKey(MainPage, related_name="faq_shorts", on_delete=models.CASCADE)
     title = models.CharField(max_length=120, verbose_name="Tytuł/Pytanie")
+    content = HTMLField(default="Faq content")
     anchor = models.CharField(max_length=500, default="#", verbose_name="Link do przekierowania po kliknięciu")
     order = models.IntegerField(max_length=10, default="1", verbose_name="Kolejność")
 

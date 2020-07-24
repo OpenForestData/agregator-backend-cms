@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from api.initialization_api.initialize_api import create_static_basic_filters_fields, create_basic_templates_data, \
-    create_basic_articles_and_keyword
+    create_basic_articles_and_keyword, create_small_add_menu
 
 
 class Command(BaseCommand):
@@ -27,6 +27,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Finished initializing basic filters fields...'))
         self.stdout.write(self.style.SUCCESS('...Starting initializing basic cms structure '))
         create_basic_templates_data()
+        create_small_add_menu()
         self.stdout.write(self.style.SUCCESS('Finished initializing basic cms structure ...'))
         self.stdout.write(self.style.SUCCESS('...Starting initializing basic blog data '))
         create_basic_articles_and_keyword()

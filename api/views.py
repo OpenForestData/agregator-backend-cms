@@ -1,5 +1,5 @@
 import json
-from cms.models import TreeNode, LanguageError, settings
+from cms.models import TreeNode, LanguageError, settings, Title
 from cms.page_rendering import _render_welcome_page, _handle_no_page
 from cms.toolbar.utils import get_toolbar_from_request
 from cms.utils import get_current_site, get_language_list, get_language_from_request
@@ -13,7 +13,7 @@ from django.utils.http import urlquote
 from django.views.decorators.csrf import csrf_exempt
 from easy_thumbnails.files import get_thumbnailer
 from api.data_populator import DataPopulator
-from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup
+from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup, AddMenuLinks
 from menus.menu_pool import menu_pool
 from api.utils import get_proper_template_info
 from core.settings import CMS_LANGUAGES
@@ -45,32 +45,25 @@ def menu(request):
     :return: Json data
     """
 
+    language = get_language_from_request(request)
+
     response = {
-        'menu': {},
+        'menu': [],
         'add_menu': [
-            {'url': 'https://onet.pl',
-             'title': 'Naukowe'},
-            {'url': 'https://onet.pl',
-             'title': 'Przestrzenne'},
-            {'url': 'https://onet.pl',
-             'title': 'Metryczne'},
+            {'url': menu_item.url,
+             'title': menu_item.name} for menu_item in AddMenuLinks.objects.get_by_lang(language).order_by('order')
         ]
     }
 
-    for lang in CMS_LANGUAGES[1]:
-        lang_code = lang['code']
-        response['menu'][lang_code] = []
-        request.COOKIES['django_language'] = lang['code']
-        pages = menu_pool.get_renderer(request).get_nodes(request)
-        for page in pages:
-            response['menu'][lang_code].append({
-                'id': page.id,
-                'title': page.title,
-                'attr': page.attr,
-                'parent_id': page.parent_id,
-                'url': 'pages?slug=' + page.get_absolute_url(),
-                'slug': page.path
-            })
+    pages = Title.objects.public().filter(language=language)
+    for title_page in pages:
+        response['menu'].append({
+            'id': title_page.page.id,
+            'title': title_page.menu_title,
+            'parent_id': title_page.page.node_id,
+            'url': 'pages?slug=' + title_page.page.get_absolute_url(),
+            'slug': title_page.slug
+        })
     return JsonResponse(response, safe=False)
 
 
@@ -271,6 +264,12 @@ def home(request):
                  FaqShort.objects.filter(main_page=main_page).order_by('order')]
     }, safe=False)
 
+
 #
 # def initialize_static_filters():
 #     #TODO not good place for that1
+
+
+def get_faq(request):
+    response = list(FaqShort.objects.all().order_by('order').values())
+    return JsonResponse(response, safe=False)
