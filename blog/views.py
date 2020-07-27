@@ -76,8 +76,8 @@ def detail(request, slug):
                 'url': article.get_absolute_url(),
                 'slug': article.slug,
                 'related_posts': [],
-                'next': next_article.get_absolute_url(),
-                'prev': prev_article.get_absolute_url()
+                'next': next_article.slug,
+                'prev': prev_article.slug
             }
         return JsonResponse({'article': article, 'related_posts': retlated_posts},
                             safe=False)
