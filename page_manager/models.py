@@ -1,5 +1,5 @@
 from cms.extensions import PageExtension, extension_pool
-from cms.models import Page, Title
+from cms.models import Title
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 from easy_thumbnails.files import get_thumbnailer

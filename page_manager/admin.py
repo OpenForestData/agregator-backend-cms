@@ -31,7 +31,6 @@ class PagePatternAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super(PagePatternAdmin, self).save_model(request, obj, form, change)
-        olo = self
 
 
 admin.site.register(PagePattern, PagePatternAdmin)
