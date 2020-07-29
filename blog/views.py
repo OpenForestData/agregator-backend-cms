@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from easy_thumbnails.files import get_thumbnailer
-from blog.models import Article, BlogFront, BlogKeword
+from blog.models import Article, BlogFront, BlogKeyword
 from django.core.paginator import Paginator
 
 
@@ -96,7 +96,7 @@ def index(request):
     limit = request.GET.get('limit', 6)
     keywords_slug = request.GET.get('keyword', None)
     current_page = list(BlogFront.objects.all().values())
-    keywords_set = BlogKeword.objects.all()
+    keywords_set = BlogKeyword.objects.all()
     keywords = []
     for keyword in keywords_set:
         keywords.append({
@@ -107,7 +107,7 @@ def index(request):
 
     articles_queryset = Article.objects.all().order_by('date')
     if keywords_slug:
-        blog_keyword = BlogKeword.objects.filter(slug=keywords_slug).first()
+        blog_keyword = BlogKeyword.objects.filter(slug=keywords_slug).first()
         if blog_keyword:
             articles_queryset = blog_keyword.get_articles()
     articles = []
@@ -156,7 +156,7 @@ def index(request):
 
 
 def keyword(request, slug):
-    blog_keyword = BlogKeword.objects.get(slug=slug)
+    blog_keyword = BlogKeyword.objects.get(slug=slug)
     all_articles = Article.objects.all()
     articles = []
     articles_queryset = all_articles.filter(keywords=blog_keyword).order_by('date')
@@ -191,7 +191,7 @@ def keyword(request, slug):
             'slug': article.slug
         })
     current_page = list(BlogFront.objects.all().values())
-    keywords_set = BlogKeword.objects.all()
+    keywords_set = BlogKeyword.objects.all()
     keywords = []
     for keyword in keywords_set:
         keywords.append({

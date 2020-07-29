@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils.text import slugify
 from unidecode import unidecode
 
-from blog.models import Article, BlogKeword, BlogFront
+from blog.models import Article, BlogKeyword, BlogFront
 
 
 class BlogFrontAdmin(admin.ModelAdmin):
@@ -23,12 +23,13 @@ class BlogFrontAdmin(admin.ModelAdmin):
         return super().has_delete_permission(request)
 
 
-admin.site.register(BlogFront, BlogFrontAdmin)
+# admin.site.register(BlogFront, BlogFrontAdmin)
 
 
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
     exclude = ('slug',)
+    ordering = ['language', 'date']
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(unidecode(obj.title))
@@ -39,12 +40,13 @@ admin.site.register(Article, ArticleAdmin)
 
 
 class BlogKeyWordAdmin(admin.ModelAdmin):
-    model = BlogKeword
+    model = BlogKeyword
     exclude = ('slug',)
+    ordering = ['language']
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(unidecode(obj.title))
         super(BlogKeyWordAdmin, self).save_model(request, obj, form, change)
 
 
-admin.site.register(BlogKeword, BlogKeyWordAdmin)
+admin.site.register(BlogKeyword, BlogKeyWordAdmin)

@@ -19,14 +19,21 @@ from page_manager.models import MainPage, IconSpecies, FaqShort
 
 
 def facet_list(request):
+    """
+    Endpoint responsible for gettting facet list based on language
+    :param request: request
+    :return: all facet list
+    """
+    language = get_language_from_request(request)
+
     all_facets = {'basic_filters': {}, 'advanced_search_filters': {}}
-    for field_group in FilterGroup.objects.all().order_by('order'):
+    for field_group in FilterGroup.objects.get_by_lang(language).order_by('order'):
         all_facets['basic_filters'][field_group.name] = {
             'friendly_name': field_group.friendly_name,
             'id': field_group.id,
             'fields': field_group.get_fields()
         }
-    for field_group in AdvancedSearchFilterGroup.objects.all().order_by('order'):
+    for field_group in AdvancedSearchFilterGroup.objects.get_by_lang(language).order_by('order'):
         all_facets['advanced_search_filters'][field_group.name] = {
             'friendly_name': field_group.friendly_name,
             'id': field_group.id,
@@ -66,6 +73,12 @@ def menu(request):
 
 
 def page_details(request, slug):
+    """
+    Endpoint responsible for getting proper page template data
+    :param request: request
+    :param slug: page slug (title)
+    :return: json page data
+    """
     # Get a Page model object from the request
     site = get_current_site()
     page = get_page_from_request(request, use_path=slug)
@@ -170,8 +183,8 @@ def page_details(request, slug):
         request.toolbar.set_object(page)
 
     # structure_requested = get_cms_setting('CMS_TOOLBAR_URL__BUILD') in request.GET
-
-    return JsonResponse(get_proper_template_info(page), safe=False)
+    language = get_language_from_request(request)
+    return JsonResponse(get_proper_template_info(page, language), safe=False)
 
 
 @csrf_exempt
@@ -194,8 +207,15 @@ def populate_categories_fields_list(request):
 
 
 def get_categories_fields_list(request):
+    """
+    Endpoint responsible for obtaining categories
+    based on set lang in request
+    :param request: request
+    :return: json with public categories
+    """
+    language = get_language_from_request(request)
     public_categories = {}
-    for category in AgregatorCategory.objects.filter(public=True).order_by('order'):
+    for category in AgregatorCategory.objects.get_by_lang(language).filter(public=True).order_by('order'):
         public_categories[category.name] = {
             'name': category.name,
             'friendly_name': category.friendly_name,
@@ -225,7 +245,9 @@ def ragister_metadata_blocks(request):
 
 
 def home(request):
-    main_page = MainPage.objects.first()
+    language = get_language_from_request(request)
+
+    main_page = MainPage.objects.filter(language=language).first()
     try:
         options = {'size': (1200, 630), 'crop': True}
         og_image_thumb_url = get_thumbnailer(main_page.og_image).get_thumbnail(options).url
@@ -256,18 +278,15 @@ def home(request):
         'mobile_app_image': mobile_app_image,
         'mobile_app_cta_link': main_page.mobile_app_cta_link,
         'mobile_app_cta_text': main_page.mobile_app_cta_text,
-        'categories': [{'title': category.title, 'image': category.image} for category in
+        'categories': [{'title': category.title, 'image': category.image, 'href': category.href} for category in
                        IconSpecies.objects.filter(main_page=main_page).order_by('order')],
         'faqs': [{'title': faq.title, 'anchor': faq.anchor} for faq in
                  FaqShort.objects.filter(main_page=main_page).order_by('order')]
     }, safe=False)
 
 
-#
-# def initialize_static_filters():
-#     #TODO not good place for that1
-
-
 def get_faq(request):
-    response = list(FaqShort.objects.all().order_by('order').values())
+    language = get_language_from_request(request)
+    main_page = MainPage.objects.filter(language=language).first()
+    response = list(main_page.faq_shorts.all().order_by('order').values('title', 'content', 'anchor', 'order'))
     return JsonResponse(response, safe=False)

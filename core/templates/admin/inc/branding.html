@@ -31,4 +31,22 @@
         </ul>
     </li>
 </ul>
+<div id="header-btn">
+    <a href="/" target="_blank" class="icon-arrow-right btn js-header-link">
+        Update
+    </a>
+</div>
+<script>
+	const URL = 'http://127.0.0.1:8000/api/v1/update-consistency';
+
+	const el = document.querySelector('#header-btn a');
+
+	el.addEventListener('click', function(e) {
+		e.preventDefault();
+
+		fetch(URL).then(function() {
+			el.innerHTML = 'Updated';
+		});
+	});
+</script>
 

@@ -171,12 +171,15 @@ INSTALLED_APPS = [
     'djangocms_googlemap',
     'djangocms_video',
     # additional apps
+    'corsheaders',
     'content_manager',
     'page_manager',
     'api',
     'blog',
     'news'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 LANGUAGES = (
     ## Customize this

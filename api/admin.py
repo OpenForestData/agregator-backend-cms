@@ -12,6 +12,7 @@ class FilterFieldAdmin(admin.StackedInline):
 class FilterGroupAdmin(admin.ModelAdmin):
     model = FilterGroup
     inlines = [FilterFieldAdmin, ]
+    ordering = ['language', 'order']
 
 
 admin.site.register(FilterGroup, FilterGroupAdmin)
@@ -32,7 +33,7 @@ admin.site.register(AdvancedSearchFilterGroup, AdvancedSearchFilterGroupAdmin)
 
 class AgregatorCategoryAdmin(admin.ModelAdmin):
     model = AgregatorCategory
-    ordering = ['order']
+    ordering = ['language', 'order']
 
 
 admin.site.register(AgregatorCategory, AgregatorCategoryAdmin)

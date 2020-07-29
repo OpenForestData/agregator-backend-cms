@@ -1,8 +1,7 @@
-from cms.admin.pageadmin import PageAdmin
 from cms.extensions import PageExtensionAdmin
-from cms.models import Page
 from django.contrib import admin
 
+from core.settings import LANGUAGES
 from page_manager.form import PagePatternAdminForm
 from page_manager.models import MetaTagsExtension, AboutUsPage, PagePattern, MetaPage, MainPage, \
     IconSpecies, FaqShort, Accordion, AccordionPage
@@ -26,19 +25,21 @@ class AboutUsPageAdmin(admin.ModelAdmin):
 admin.site.register(AboutUsPage, AboutUsPageAdmin)
 
 
-class PagePatternAdmin(admin.TabularInline):
+class PagePatternAdmin(admin.ModelAdmin):
     model = PagePattern
     form = PagePatternAdminForm
 
+    def save_model(self, request, obj, form, change):
+        super(PagePatternAdmin, self).save_model(request, obj, form, change)
+        olo = self
 
-admin.site.unregister(Page)
 
-PageAdmin.inlines.append(PagePatternAdmin)
-admin.site.register(Page, PageAdmin)
+admin.site.register(PagePattern, PagePatternAdmin)
 
 
 class IconSpeciesAdmin(admin.StackedInline):
     model = IconSpecies
+    ordering = ['order']
 
 
 class FaqShortAdmin(admin.StackedInline):
@@ -51,13 +52,13 @@ class MainPageAdmin(admin.ModelAdmin):
     inlines = [IconSpeciesAdmin, FaqShortAdmin]
 
     def has_add_permission(self, request):
-        MAX_OBJECTS = 1
+        MAX_OBJECTS = len(LANGUAGES)
         if self.model.objects.count() >= MAX_OBJECTS:
             return False
         return super().has_add_permission(request)
 
     def has_delete_permission(self, request, obj=None):
-        MAX_OBJECTS = 1
+        MAX_OBJECTS = len(LANGUAGES)
         if self.model.objects.count() >= MAX_OBJECTS:
             return False
         return super().has_delete_permission(request)

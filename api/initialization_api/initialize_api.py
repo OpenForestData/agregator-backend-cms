@@ -2,9 +2,9 @@ from cms.api import create_page
 from django.utils.text import slugify
 
 from api.models import FilterGroup, FilterField, AdvancedSearchFilterGroup, AdvancedSearchFilterField, AddMenuLinks
-from blog.models import BlogKeword, Article
+from blog.models import BlogKeyword, Article
 from news.models import News
-from page_manager.models import AccordionPage, PagePattern, Accordion, AboutUsPage, MainPage, IconSpecies, FaqShort
+from page_manager.models import AccordionPage, Accordion, AboutUsPage, MainPage, IconSpecies, FaqShort
 
 BASIC_LANGUAGES_TO_INITIALIZE_DATA = ['pl', 'en']
 
@@ -48,6 +48,10 @@ def create_static_basic_filters_fields():
 
 def create_basic_templates_data():
     page = create_page('Test Akordion', 'fullwidth.html', 'pl', 'Test Akordion')
+    page.publish(language='pl')
+    page = create_page('Test Akordion', 'fullwidth.html', 'en', 'Test Akordion EN')
+    page.publish(language='en')
+
     accordion_page = AccordionPage(**{
         'title': "Test",
         'title_seo': "Test seo",
@@ -67,9 +71,9 @@ def create_basic_templates_data():
 
         })
 
-    page_pattern = PagePattern.objects.create(page=page, accordion=accordion_page)
-    page_pattern.save()
-    page.publish(language='pl')
+    # page_pattern = PagePattern.objects.create(page=page, accordion=accordion_page)
+    # page_pattern.save()
+    # page.publish(language='pl')
 
     page = create_page('Test O nas', 'fullwidth.html', 'pl', 'Test o nas')
 
@@ -83,97 +87,103 @@ def create_basic_templates_data():
         'content': "To jest content testowy"
     })
     about_us_page.save()
-    PagePattern.objects.create(page=page, about_us=about_us_page)
+    # PagePattern.objects.create(page=page, about_us=about_us_page)
     page.publish(language='pl')
 
-    main_page = MainPage(**{
-        'title': "Test",
-        'title_seo': "Test seo",
-        'description': "Test desc seo",
-        'keywords_seo': "Test keyword seo",
-        'author': "Autor Seo",
-        'og_type': 'type og seo',
-        'title_slider': "Tytuł slidera duży",
-        'title_slider_small': "Tytuł sldiera mały",
-        'contact_content': "Content dla sekcji kontakt",
-        'youtube_title': "Tytuł youtube",
-        'youtube_link': "https://www.youtube.com/watch?v=QcXtF8Gj_Z0",
-        'youtube_mobie_text': "Tekst pod filmem",
-        'mobile_app_title': "Tytuł sekcji aplikacja mobilna",
-        'mobile_app_content': "<p>Content dla sekcji mobile</p>",
-        'mobile_app_cta_link': "#",
-        'mobile_app_cta_text': "Tekst na buttonie"
-    })
-    main_page.save()
+    for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
+        main_page = MainPage(**{
+            'title': f'Title seo {lang}',
+            'language': lang,
+            'title_seo': "Test seo",
+            'description': "Test desc seo",
+            'keywords_seo': "Test keyword seo",
+            'author': "Autor Seo",
+            'og_type': 'type og seo',
+            'title_slider': "Tytuł slidera duży",
+            'title_slider_small': "Tytuł sldiera mały",
+            'contact_content': "Content dla sekcji kontakt",
+            'youtube_title': "Tytuł youtube",
+            'youtube_link': "https://www.youtube.com/watch?v=QcXtF8Gj_Z0",
+            'youtube_mobie_text': "Tekst pod filmem",
+            'mobile_app_title': "Tytuł sekcji aplikacja mobilna",
+            'mobile_app_content': "<p>Content dla sekcji mobile</p>",
+            'mobile_app_cta_link': "#",
+            'mobile_app_cta_text': "Tekst na buttonie"
+        })
+        main_page.save()
 
-    for _ in range(1, 7):
-        IconSpecies.objects.create(main_page=main_page, title=f'test{_}')
+        for _ in range(1, 7):
+            IconSpecies.objects.create(main_page=main_page, title=f'test{_}_{lang}')
 
-    for _ in range(1, 5):
-        FaqShort.objects.create(main_page=main_page, title=f'test{_}', anchor=f'{_}')
+        for _ in range(1, 5):
+            FaqShort.objects.create(main_page=main_page, title=f'test{_}_{lang}', anchor=f'{_}')
 
 
 def create_basic_articles_and_keyword():
     for _ in range(1, 30):
-        BlogKeword.objects.create(**{
+        BlogKeyword.objects.create(**{
             'title': f'Keyword testowy nr {_}',
             'slug': f'keyword-{_}'
         })
 
     for _ in range(1, 30):
-        article = Article(**{
-            'title': f"Test {_}",
-            'title_seo': "Test seo",
-            'description': "Test desc seo",
-            'keywords_seo': "Test keyword seo",
-            'author': "Autor Seo",
-            'og_type': 'type og seo',
-            'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
-            Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
-            ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
-             trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
-             Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
-             się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
-              <strong></strong> Gotowy?</p>',
-            'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
-            liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
-            oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
-            się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
-            dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
-            przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
-            dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
-            'movie_youtube_link': 'https://www.youtube.com/watch?v=QcXtF8Gj_Z0',
-            'slug': slugify(f'Test {_}')
-        })
-        article.save()
-        article.keywords.add(BlogKeword.objects.get(pk=_))
-        article.save()
+        for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
+            article = Article(**{
+                'title': f"Test {_} {lang}",
+                'title_seo': "Test seo",
+                'description': "Test desc seo",
+                'keywords_seo': "Test keyword seo",
+                'author': "Autor Seo",
+                'og_type': 'type og seo',
+                'language': lang,
+                'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
+                Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
+                ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
+                 trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
+                 Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
+                 się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
+                  <strong></strong> Gotowy?</p>',
+                'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
+                liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
+                oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
+                się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
+                dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
+                przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
+                dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
+                'movie_youtube_link': 'https://www.youtube.com/watch?v=QcXtF8Gj_Z0',
+                'slug': slugify(f'Test {_}')
+            })
+            article.save()
+            article.keywords.add(BlogKeyword.objects.get(pk=_))
+            article.save()
 
     for _ in range(1, 30):
-        article = News(**{
-            'title': f"Test {_}",
-            'title_seo': "Test seo",
-            'description': "Test desc seo",
-            'keywords_seo': "Test keyword seo",
-            'author': "Autor Seo",
-            'og_type': 'type og seo',
-            'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
-            Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
-            ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
-             trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
-             Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
-             się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
-              <strong></strong> Gotowy?</p>',
-            'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
-            liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
-            oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
-            się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
-            dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
-            przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
-            dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
-            'slug': slugify(f'Test {_}')
-        })
-        article.save()
+        for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
+            article = News(**{
+                'title': f"Test {_} {lang}",
+                'title_seo': "Test seo",
+                'description': "Test desc seo",
+                'keywords_seo': "Test keyword seo",
+                'author': "Autor Seo",
+                'language': lang,
+                'og_type': 'type og seo',
+                'desc': '<p> OPIST LISTY W jaki sposób się wyróżnić, by przyciągnąć jak największą liczbę odbiorców? \
+                Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, oferująca swoje usługi, \
+                ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo się rozszerzył. O wiele\
+                 trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na dłużej” wierny marce. ]\
+                 Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu przedsiębiorców decyduje \
+                 się na personalizowanie swoich usług. Na czym zatem polega personalizacja i dlaczego warto ją wykorzystać?\
+                  <strong></strong> Gotowy?</p>',
+                'content': 'CONTENT PO WEJSCIU DO BLOGA W jaki sposób się wyróżnić, by przyciągnąć jak największą \
+                liczbę odbiorców? Jak wiesz, <strong></strong>, w dzisiejszych czasach praktycznie każda firma, \
+                oferująca swoje usługi, ma bardzo wielu konkurentów. Rynek handlu, sprzedaży towarów i usług bardzo \
+                się rozszerzył. O wiele trudniej jest się wyróżnić i przyciągnąć uwagę klienta tak, by został on „na \
+                dłużej” wierny marce. Dziś liczy się zatem kreatywność i oryginalność, nic więc dziwnego, że wielu \
+                przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
+                dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
+                'slug': slugify(f'Test {_}')
+            })
+            article.save()
 
 
 def create_small_add_menu():

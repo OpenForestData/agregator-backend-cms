@@ -5,6 +5,8 @@ from django.urls import reverse
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
 
+from core.base_models import LangChooseMixin
+
 
 class BlogFront(models.Model):
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
@@ -31,7 +33,7 @@ class BlogFront(models.Model):
         return self.title
 
 
-class BlogKeword(models.Model):
+class BlogKeyword(LangChooseMixin):
     title = models.CharField(max_length=120, verbose_name="Tag", unique=True)
     slug = models.SlugField(unique=True)
 
@@ -49,7 +51,7 @@ class BlogKeword(models.Model):
         return self.blog_articles.all().order_by('date')
 
 
-class Article(models.Model):
+class Article(LangChooseMixin):
     title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
                                  blank=True)
     description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
@@ -62,16 +64,13 @@ class Article(models.Model):
                                blank=True)
     og_image = FilerImageField(verbose_name="Miniatura w social Media", on_delete=models.CASCADE,
                                null=True, blank=True, related_name='article_og_image')
-
-    # thumbnail
     image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga", on_delete=models.CASCADE,
                                     null=True, blank=True, related_name='image_in_list')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
     desc = HTMLField(verbose_name="Opis do listy", null=True, blank=True)
-    keywords = models.ManyToManyField(BlogKeword, related_name="blog_articles")
+    keywords = models.ManyToManyField(BlogKeyword, related_name="blog_articles")
     content = HTMLField(verbose_name="Content wpisu - <name> zostanie zamienione na imię", null=True, blank=True)
-    # film
     movie_youtube_link = models.CharField(max_length=120, verbose_name="Link do filmu na YT", null=True, blank=True)
     slug = models.SlugField()
 

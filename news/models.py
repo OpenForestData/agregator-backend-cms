@@ -3,8 +3,10 @@ from django.urls import reverse
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
 
+from core.base_models import LangChooseMixin
 
-class News(models.Model):
+
+class News(LangChooseMixin):
     title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
                                  blank=True)
     description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
@@ -33,7 +35,7 @@ class News(models.Model):
         verbose_name = "News"
 
     def __str__(self):
-        return self.title + f" {str(self.date)}"
+        return self.title + f" {str(self.date)} | {self.language}"
 
     def get_absolute_url(self):
         return reverse('api:news:detail', kwargs={'slug': self.slug})
