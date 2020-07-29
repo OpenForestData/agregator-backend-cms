@@ -26,5 +26,5 @@ urlpatterns += i18n_patterns(
 
 # This is only needed when using runserver.
 if settings.DEBUG:
-    urlpatterns = [url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    urlpatterns = [url(r'^api/v1/media-cms/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
                    ] + staticfiles_urlpatterns() + urlpatterns

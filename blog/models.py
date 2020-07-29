@@ -34,7 +34,7 @@ class BlogFront(models.Model):
 
 
 class BlogKeyword(LangChooseMixin):
-    title = models.CharField(max_length=120, verbose_name="Tag", unique=True)
+    title = models.CharField(max_length=120, verbose_name="Tag")
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -43,6 +43,9 @@ class BlogKeyword(LangChooseMixin):
 
     def __str__(self):
         return self.title
+
+    def get_slug(self):
+        return self.slug
 
     def get_absolute_url(self):
         return reverse('api:blog:keyword', kwargs={'slug': self.slug})
@@ -77,6 +80,12 @@ class Article(LangChooseMixin):
     class Meta:
         verbose_name_plural = "Artykuły"
         verbose_name = "Artykuł"
+
+    def get_slug(self):
+        try:
+            return self.slug
+        except Exception:
+            return ""
 
     def __str__(self):
         return self.title + f" {str(self.date)}"

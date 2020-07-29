@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.utils.text import slugify
 from unidecode import unidecode
 
+from blog.form import ArticleAdminForm
 from blog.models import Article, BlogKeyword, BlogFront
 
 
@@ -30,6 +31,7 @@ class ArticleAdmin(admin.ModelAdmin):
     model = Article
     exclude = ('slug',)
     ordering = ['language', 'date']
+    form = ArticleAdminForm
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(unidecode(obj.title))

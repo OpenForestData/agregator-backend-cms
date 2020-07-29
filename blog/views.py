@@ -1,3 +1,4 @@
+from cms.utils import get_language_from_request
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -36,14 +37,11 @@ def detail(request, slug):
                 'title': related.title,
                 'date': related.date,
                 'content': related.content,
-                'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.slug} for
+                'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.get_slug()} for
                              keyword in related.keywords.all()],
                 'movie_youtube_link': related.movie_youtube_link,
                 'url': related.get_absolute_url(),
-                'slug': related.slug,
-                'related_posts': [],
-                'next': next_article.slug,
-                'prev': prev_article.slug
+                'slug': related.get_slug(),
             })
 
         for article in articles_queryset:
@@ -70,14 +68,14 @@ def detail(request, slug):
                 'title': article.title,
                 'date': article.date,
                 'content': article.content,
-                'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.slug} for
+                'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.get_slug()} for
                              keyword in article.keywords.all()],
                 'movie_youtube_link': article.movie_youtube_link,
                 'url': article.get_absolute_url(),
-                'slug': article.slug,
+                'slug': article.get_slug(),
                 'related_posts': [],
-                'next': next_article.slug,
-                'prev': prev_article.slug
+                'next': next_article.get_slug() if next_article else None,
+                'prev': prev_article.get_slug() if prev_article else None
             }
         return JsonResponse({'article': article, 'related_posts': retlated_posts},
                             safe=False)
@@ -92,11 +90,12 @@ def latest(request):
 
 
 def index(request):
+    language = get_language_from_request(request)
     page = request.GET.get('page', 1)
     limit = request.GET.get('limit', 6)
     keywords_slug = request.GET.get('keyword', None)
     current_page = list(BlogFront.objects.all().values())
-    keywords_set = BlogKeyword.objects.all()
+    keywords_set = BlogKeyword.objects.get_by_lang(language)
     keywords = []
     for keyword in keywords_set:
         keywords.append({
@@ -105,9 +104,9 @@ def index(request):
             'slug': keyword.slug
         })
 
-    articles_queryset = Article.objects.all().order_by('date')
+    articles_queryset = Article.objects.get_by_lang(language).order_by('date')
     if keywords_slug:
-        blog_keyword = BlogKeyword.objects.filter(slug=keywords_slug).first()
+        blog_keyword = BlogKeyword.objects.filter(slug=keywords_slug, language=language).first()
         if blog_keyword:
             articles_queryset = blog_keyword.get_articles()
     articles = []

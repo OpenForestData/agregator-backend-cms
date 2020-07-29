@@ -1,3 +1,4 @@
+from cms.utils import get_language_from_request
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect
@@ -50,8 +51,9 @@ def detail(request, slug):
 def latest(request):
     page = request.GET.get('page', 1)
     limit = request.GET.get('limit', 6)
+    language = get_language_from_request(request)
     current_page = list(NewsFront.objects.all().values())
-    articles_queryset = News.objects.all().order_by('date')
+    articles_queryset = News.objects.get_by_lang(language).order_by('date')
     articles = []
     for article in articles_queryset:
         options = {'size': (1680, 900), 'crop': True}

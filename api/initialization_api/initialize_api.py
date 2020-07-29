@@ -49,8 +49,11 @@ def create_static_basic_filters_fields():
 def create_basic_templates_data():
     page = create_page('Test Akordion', 'fullwidth.html', 'pl', 'Test Akordion')
     page.publish(language='pl')
+    page = create_page('Privacy policy', 'fullwidth.html', 'pl', 'Privacy policy')
+    page.publish(language='pl')
     page = create_page('Test Akordion', 'fullwidth.html', 'en', 'Test Akordion EN')
     page.publish(language='en')
+
 
     accordion_page = AccordionPage(**{
         'title': "Test",
@@ -121,10 +124,12 @@ def create_basic_templates_data():
 
 def create_basic_articles_and_keyword():
     for _ in range(1, 30):
-        BlogKeyword.objects.create(**{
-            'title': f'Keyword testowy nr {_}',
-            'slug': f'keyword-{_}'
-        })
+        for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
+            BlogKeyword.objects.create(**{
+                'title': f'Keyword testowy nr {_}',
+                'slug': f'keyword-{_}-{lang}',
+                'language': lang,
+            })
 
     for _ in range(1, 30):
         for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
@@ -151,10 +156,10 @@ def create_basic_articles_and_keyword():
                 przedsiębiorców decyduje się na personalizowanie swoich usług. Na czym zatem polega personalizacja i \
                 dlaczego warto ją wykorzystać? <strong></strong> Gotowy?</p>',
                 'movie_youtube_link': 'https://www.youtube.com/watch?v=QcXtF8Gj_Z0',
-                'slug': slugify(f'Test {_}')
+                'slug': slugify(f'Test {_}-{lang}')
             })
             article.save()
-            article.keywords.add(BlogKeyword.objects.get(pk=_))
+            article.keywords.add(BlogKeyword.objects.filter(language=lang).first())
             article.save()
 
     for _ in range(1, 30):
