@@ -53,7 +53,7 @@ def latest(request):
     limit = request.GET.get('limit', 6)
     language = get_language_from_request(request)
     current_page = list(NewsFront.objects.all().values())
-    articles_queryset = News.objects.get_by_lang(language).order_by('date')
+    articles_queryset = News.objects.get_by_lang(language).order_by('-date')
     articles = []
     for article in articles_queryset:
         options = {'size': (1680, 900), 'crop': True}
