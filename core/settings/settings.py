@@ -76,7 +76,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/api/v1/media-cms/'
+STATIC_URL = '/media-cms/'
 MEDIA_URL = '/api/v1/media-cms/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
