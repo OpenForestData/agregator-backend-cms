@@ -95,7 +95,7 @@ class AgregatorCategory(LangChooseMixin):
     name = models.CharField(max_length=120, verbose_name="Name")
     dv_name = models.CharField(max_length=120, verbose_name="DvName")
     publication_date = models.CharField(max_length=10, verbose_name="Data publikacji")
-    dv_affiliation = models.CharField(max_length=120, verbose_name="Dataverse Affiliation")
+    dv_affiliation = models.CharField(max_length=120, verbose_name="Dataverse Affiliation", null=True, blank=True)
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")
 

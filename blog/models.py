@@ -103,7 +103,7 @@ class Article(LangChooseMixin):
         return str(text).replace('{imie}', f'<strong>{name}</strong>')
 
     def next_prev_get(self):
-        qset = list(self.__class__.objects.all().order_by('date'))
+        qset = list(self.__class__.objects.get_by_lang(self.language).order_by('date'))
         obj_index = qset.index(self)
         try:
             previous = qset[obj_index - 1]

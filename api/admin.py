@@ -14,6 +14,9 @@ class FilterGroupAdmin(admin.ModelAdmin):
     model = FilterGroup
     inlines = [FilterFieldAdmin, ]
     ordering = ['language', 'order']
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
 
 admin.site.register(FilterGroup, FilterGroupAdmin)
@@ -27,6 +30,9 @@ class AdvancedSearchFilterFieldAdmin(admin.StackedInline):
 class AdvancedSearchFilterGroupAdmin(admin.ModelAdmin):
     model = AdvancedSearchFilterGroup
     inlines = [AdvancedSearchFilterFieldAdmin, ]
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
 
 admin.site.register(AdvancedSearchFilterGroup, AdvancedSearchFilterGroupAdmin)
@@ -35,6 +41,9 @@ admin.site.register(AdvancedSearchFilterGroup, AdvancedSearchFilterGroupAdmin)
 class AgregatorCategoryAdmin(admin.ModelAdmin):
     model = AgregatorCategory
     ordering = ['language', 'order']
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
 
 admin.site.register(AgregatorCategory, AgregatorCategoryAdmin)

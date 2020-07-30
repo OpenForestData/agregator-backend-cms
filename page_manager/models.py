@@ -99,6 +99,15 @@ class IconSpecies(models.Model):
                             null=True, blank=True, related_name='species_image')
     order = models.IntegerField(max_length=10, default=1, verbose_name="Kolejność")
 
+    def get_thumbnail(self):
+        options = {'size': (200, 0), 'crop': True}
+        try:
+            thumbnail_url = get_thumbnailer(self.image).get_thumbnail(options).url
+        except Exception as ex:
+            print(ex)
+            thumbnail_url = ""
+        return thumbnail_url
+
 
 class FaqShort(models.Model):
     """

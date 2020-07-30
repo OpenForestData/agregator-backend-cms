@@ -16,7 +16,7 @@ def detail(request, slug):
             options = {'size': (1680, 900), 'crop': True}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
-            next_article, prev_article = article.next_prev_get()
+            prev_article, next_article = article.next_prev_get()
             try:
                 image_in_list_thumb_url = get_thumbnailer(article.image_in_list).get_thumbnail(options).url
             except Exception as ex:
@@ -37,9 +37,9 @@ def detail(request, slug):
                 'date': article.date,
                 'content': article.content,
                 'url': article.get_absolute_url(),
-                'slug': article.slug,
-                'next': next_article.slug,
-                'prev': prev_article.slug
+                'slug': article.get_slug(),
+                'next': next_article.get_slug() if next_article else "",
+                'prev': prev_article.get_slug() if prev_article else ""
             }
         return JsonResponse({'article': article},
                             safe=False)

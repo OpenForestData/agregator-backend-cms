@@ -32,6 +32,9 @@ class ArticleAdmin(admin.ModelAdmin):
     exclude = ('slug',)
     ordering = ['language', 'date']
     form = ArticleAdminForm
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(unidecode(obj.title))
@@ -45,6 +48,9 @@ class BlogKeyWordAdmin(admin.ModelAdmin):
     model = BlogKeyword
     exclude = ('slug',)
     ordering = ['language']
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
     def save_model(self, request, obj, form, change):
         obj.slug = slugify(unidecode(obj.title))

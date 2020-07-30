@@ -49,6 +49,9 @@ class FaqShortAdmin(admin.StackedInline):
 class MainPageAdmin(admin.ModelAdmin):
     model = MainPage
     inlines = [IconSpeciesAdmin, FaqShortAdmin]
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
     def has_add_permission(self, request):
         MAX_OBJECTS = len(LANGUAGES)

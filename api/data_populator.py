@@ -96,7 +96,7 @@ class DataPopulator:
                 if category['name'] not in agregator_categories_names:
                     for lang in LANGUAGES:
                         AgregatorCategory.objects.create(dataverse_id=category['id'],
-                                                         friendly_name=category['friendly_name'],
+                                                         friendly_name=category['friendly_name'] + f" | {lang[0]}",
                                                          name=category['name'],
                                                          description=category['description'],
                                                          dv_affiliation=category['dvAffiliation'],
