@@ -56,7 +56,7 @@ def latest(request):
     articles_queryset = News.objects.get_by_lang(language).order_by('-date')
     articles = []
     for article in articles_queryset:
-        options = {'size': (1680, 900), 'crop': True}
+        options = {'size': (900, 900), 'crop': True}
         image_in_list_thumb_url = ""
         og_image_thumb_url = ""
         try:
