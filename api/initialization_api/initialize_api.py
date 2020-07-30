@@ -54,7 +54,6 @@ def create_basic_templates_data():
     page = create_page('Test Akordion', 'fullwidth.html', 'en', 'Test Akordion EN')
     page.publish(language='en')
 
-
     accordion_page = AccordionPage(**{
         'title': "Test",
         'title_seo': "Test seo",

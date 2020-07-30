@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from api.models import FilterGroup, FilterField, AgregatorCategory, AdvancedSearchFilterField, AdvancedSearchFilterGroup
+from api.models import FilterGroup, FilterField, AgregatorCategory, AdvancedSearchFilterField, \
+    AdvancedSearchFilterGroup, AddMenuLinks
 
 
 class FilterFieldAdmin(admin.StackedInline):
@@ -37,3 +38,11 @@ class AgregatorCategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AgregatorCategory, AgregatorCategoryAdmin)
+
+
+class AddMenuLinksAdmin(admin.ModelAdmin):
+    model = AddMenuLinks
+    ordering = ['language', 'order']
+
+
+admin.site.register(AddMenuLinks, AddMenuLinksAdmin)
