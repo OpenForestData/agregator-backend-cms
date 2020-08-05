@@ -14,7 +14,8 @@ def detail(request, slug):
         articles_queryset = Article.objects.filter(slug=slug)
         related_queryset = Article.objects.filter(keywords__in=list(articles_queryset.first().keywords.all()))
         for related in related_queryset:
-            options = {'size': (1680, 900), 'crop': True}
+            options = {'size': (1680, 900), 'crop': True,
+                       'subject_location': related.image_in_list.subject_location if related.image_in_list else None}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
             try:
@@ -45,7 +46,8 @@ def detail(request, slug):
             })
 
         for article in articles_queryset:
-            options = {'size': (1680, 900), 'crop': True}
+            options = {'size': (1680, 900), 'crop': True,
+                       'subject_location': article.image_in_list.subject_location if article.image_in_list else None}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
             try:
@@ -166,7 +168,7 @@ def keyword(request, slug):
         except Exception as ex:
             print(ex)
             image_in_list_thumb_url = ""
-        options = {'size': (1200, 630), 'crop': True}
+        options = {'size': (1200, 630), 'crop': True, }
         try:
             og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
         except Exception as ex:

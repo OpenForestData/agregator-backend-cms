@@ -48,6 +48,7 @@ class FaqShortAdmin(admin.ModelAdmin):
         ('language', admin.AllValuesFieldListFilter),
     )
 
+
 admin.site.register(FaqShort, FaqShortAdmin)
 
 
