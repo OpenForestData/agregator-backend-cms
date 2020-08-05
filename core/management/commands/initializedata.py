@@ -29,9 +29,9 @@ class Command(BaseCommand):
         create_basic_templates_data()
         create_small_add_menu()
         self.stdout.write(self.style.SUCCESS('Finished initializing basic cms structure ...'))
-        self.stdout.write(self.style.SUCCESS('...Starting initializing basic blog data '))
+        self.stdout.write(self.style.SUCCESS('...Starting initializing basic news data '))
         create_basic_articles_and_keyword()
-        self.stdout.write(self.style.SUCCESS('Finished initializing basic blog data ...'))
+        self.stdout.write(self.style.SUCCESS('Finished initializing basic news data ...'))
         self.stdout.write(
             self.style.SUCCESS(
                 '>>>>>>>>>>>>>>>>>>>>>>>>> Successfully initialized all data <<<<<<<<<<<<<<<<<<<<<<<<<<'))

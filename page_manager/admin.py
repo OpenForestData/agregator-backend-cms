@@ -41,14 +41,19 @@ class IconSpeciesAdmin(admin.StackedInline):
     ordering = ['order']
 
 
-class FaqShortAdmin(admin.StackedInline):
+class FaqShortAdmin(admin.ModelAdmin):
     model = FaqShort
     ordering = ['order']
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
+
+admin.site.register(FaqShort, FaqShortAdmin)
 
 
 class MainPageAdmin(admin.ModelAdmin):
     model = MainPage
-    inlines = [IconSpeciesAdmin, FaqShortAdmin]
+    inlines = [IconSpeciesAdmin]
     list_filter = (
         ('language', admin.AllValuesFieldListFilter),
     )

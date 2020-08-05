@@ -278,15 +278,16 @@ def home(request):
         'mobile_app_image': mobile_app_image,
         'mobile_app_cta_link': main_page.mobile_app_cta_link,
         'mobile_app_cta_text': main_page.mobile_app_cta_text,
-        'categories': [{'title': category.title, 'image': category.get_thumbnail(), 'href': category.href} for category in
+        'categories': [{'title': category.title, 'image': category.get_thumbnail(), 'href': category.href} for category
+                       in
                        IconSpecies.objects.filter(main_page=main_page).order_by('order')],
         'faqs': [{'title': faq.title, 'anchor': faq.anchor} for faq in
-                 FaqShort.objects.filter(main_page=main_page).order_by('order')]
+                 FaqShort.objects.get_by_lang(language=language).order_by('order')]
     }, safe=False)
 
 
 def get_faq(request):
     language = get_language_from_request(request)
-    main_page = MainPage.objects.filter(language=language).first()
-    response = list(main_page.faq_shorts.all().order_by('order').values('title', 'content', 'anchor', 'order'))
+    response = list(
+        FaqShort.objects.get_by_lang(language).order_by('order').values('title', 'content', 'anchor', 'order'))
     return JsonResponse(response, safe=False)

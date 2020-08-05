@@ -25,7 +25,7 @@ PyLint:
     allow_failure: true
     script:
         - pip install pylint pylint_django
-        - pylint --rcfile ./.pylintrc api core blog media content_manager page_manager
+        - pylint --rcfile ./.pylintrc api core news media content_manager page_manager
 
 Flake8:
     stage: code checks

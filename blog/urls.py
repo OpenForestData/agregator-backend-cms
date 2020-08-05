@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^article/(?P<slug>[\w\-]+)$', detail, name="detail"),
     url(r'^keyword/(?P<slug>[\w\-]+)$', keyword, name="keyword"),
     url(r'^index$', index, name="index"),
-    url(r'^latest$', latest, name="lates"),
+    url(r'^latest$', latest, name="latest"),
 ]

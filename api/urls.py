@@ -22,7 +22,7 @@ urlpatterns = [
     # /api/v1/get-categories-fields-list
     url(r'^faq$', api_views.get_faq, name="get_faq"),
     # url(r'^$', api_views.page_details, {'slug': ''}, name='pages-root'),
-    url(r'^blog/', include('blog.urls', namespace='blog')),
+    url(r'^news/', include('blog.urls', namespace='news')),
     # /api/v1/news
     url(r'^news/', include('news.urls', namespace='news')),
     # main page

@@ -175,8 +175,8 @@ INSTALLED_APPS = [
     'content_manager',
     'page_manager',
     'api',
-    'blog',
-    'news'
+    'news',
+    'blog'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

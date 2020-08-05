@@ -109,15 +109,18 @@ class IconSpecies(models.Model):
         return thumbnail_url
 
 
-class FaqShort(models.Model):
+class FaqShort(LangChooseMixin):
     """
     Model responsible for storing data schema for Faq short
     """
-    main_page = models.ForeignKey(MainPage, related_name="faq_shorts", on_delete=models.CASCADE)
-    title = models.CharField(max_length=120, verbose_name="Tytuł/Pytanie")
-    content = HTMLField(default="Faq content")
-    anchor = models.CharField(max_length=500, default="#", verbose_name="Link do przekierowania po kliknięciu")
+    title = models.CharField(max_length=120, verbose_name="Tytuł/Pytanie", null=True, blank=True)
+    content = HTMLField(null=True, blank=True)
+    anchor = models.CharField(max_length=500, null=True, blank=True,
+                              verbose_name="Link do przekierowania po kliknięciu")
     order = models.IntegerField(max_length=10, default="1", verbose_name="Kolejność")
+
+    def __str__(self):
+        return str(self.title)
 
 
 class AccordionPage(MetaPage):
