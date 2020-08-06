@@ -119,6 +119,10 @@ class FaqShort(LangChooseMixin):
                               verbose_name="Link do przekierowania po kliknięciu")
     order = models.IntegerField(max_length=10, default="1", verbose_name="Kolejność")
 
+    class Meta:
+        verbose_name_plural = "Pytania i odpowiedzi"
+        verbose_name = "Paytanie i odpowiedź"
+
     def __str__(self):
         return str(self.title)
 

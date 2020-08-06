@@ -282,7 +282,7 @@ def home(request):
                        in
                        IconSpecies.objects.filter(main_page=main_page).order_by('order')],
         'faqs': [{'title': faq.title, 'anchor': faq.anchor} for faq in
-                 FaqShort.objects.get_by_lang(language=language).order_by('order')]
+                 FaqShort.objects.get_by_lang(language).order_by('order')]
     }, safe=False)
 
 
