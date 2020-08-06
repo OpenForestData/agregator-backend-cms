@@ -13,7 +13,7 @@ def detail(request, slug):
         article = {}
         articles_queryset = News.objects.filter(slug=slug)
         for article in articles_queryset:
-            options = {'size': (1680, 900), 'crop': True,
+            options = {'size': (1800, 1600), 'crop': True,
                        'subject_location': article.image_in_list.subject_location if article.image_in_list else None}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
@@ -57,7 +57,7 @@ def latest(request):
     articles_queryset = News.objects.get_by_lang(language).order_by('-date')
     articles = []
     for article in articles_queryset:
-        options = {'size': (900, 900), 'crop': True,
+        options = {'size': (1800, 1600), 'crop': True,
                    'subject_location': article.image_in_list.subject_location if article.image_in_list else None}
         image_in_list_thumb_url = ""
         og_image_thumb_url = ""

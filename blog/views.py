@@ -14,7 +14,7 @@ def detail(request, slug):
         articles_queryset = Article.objects.filter(slug=slug)
         related_queryset = Article.objects.filter(keywords__in=list(articles_queryset.first().keywords.all()))
         for related in related_queryset:
-            options = {'size': (1680, 900), 'crop': True,
+            options = {'size': (1800, 1600), 'crop': True,
                        'subject_location': related.image_in_list.subject_location if related.image_in_list else None}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
@@ -46,7 +46,7 @@ def detail(request, slug):
             })
 
         for article in articles_queryset:
-            options = {'size': (1680, 900), 'crop': True,
+            options = {'size': (1800, 1600), 'crop': True,
                        'subject_location': article.image_in_list.subject_location if article.image_in_list else None}
             image_in_list_thumb_url = ""
             og_image_thumb_url = ""
@@ -113,7 +113,7 @@ def index(request):
             articles_queryset = blog_keyword.get_articles()
     articles = []
     for article in articles_queryset:
-        options = {'size': (1680, 900), 'crop': True}
+        options = {'size': (1800, 1600), 'crop': True}
         image_in_list_thumb_url = ""
         og_image_thumb_url = ""
         try:
@@ -162,13 +162,13 @@ def keyword(request, slug):
     articles = []
     articles_queryset = all_articles.filter(keywords=blog_keyword).order_by('date')
     for article in articles_queryset:
-        options = {'size': (1680, 900), 'crop': True}
+        options = {'size': (1800, 1600), 'crop': True}
         try:
             image_in_list_thumb_url = get_thumbnailer(article.image_in_list).get_thumbnail(options).url
         except Exception as ex:
             print(ex)
             image_in_list_thumb_url = ""
-        options = {'size': (1200, 630), 'crop': True, }
+        options = {'size': (1800, 1600), 'crop': True, }
         try:
             og_image_thumb_url = get_thumbnailer(article.og_image).get_thumbnail(options).url
         except Exception as ex:
