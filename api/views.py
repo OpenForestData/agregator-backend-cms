@@ -255,7 +255,7 @@ def home(request):
         print(ex)
         og_image_thumb_url = ""
     try:
-        options = {'size': (400, 1000), 'crop': True}
+        options = {'size': (200, 400), 'crop': True}
         mobile_app_image = get_thumbnailer(main_page.mobile_app_image).get_thumbnail(options).url
     except Exception as ex:
         print(ex)
