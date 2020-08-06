@@ -52,6 +52,9 @@ admin.site.register(AgregatorCategory, AgregatorCategoryAdmin)
 class AddMenuLinksAdmin(admin.ModelAdmin):
     model = AddMenuLinks
     ordering = ['language', 'order']
+    list_filter = (
+        ('language', admin.AllValuesFieldListFilter),
+    )
 
 
 admin.site.register(AddMenuLinks, AddMenuLinksAdmin)
