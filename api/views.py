@@ -65,10 +65,11 @@ def menu(request):
         response['menu'].append({
             'id': title_page.page.id,
             'title': title_page.menu_title,
-            'parent_id': title_page.page.node_id,
+            'parent_id': title_page.page.parent_page.id if title_page.page.parent_page else None,
             'url': f'pages?slug=/{language}/' + title_page.slug,
             'slug': title_page.slug
         })
+
     return JsonResponse(response, safe=False)
 
 

@@ -43,10 +43,6 @@ class DataPopulator:
                             # TODO: delete on production
                             FilterField.objects.create(
                                 field_name=field_data['name'],
-                                friendly_name=field_data['displayName'],
-                                title=field_data['title'],
-                                type=field_data['type'],
-                                description=field_data['description'],
                                 filter_group=filter_group,
                                 public=False
                             )
