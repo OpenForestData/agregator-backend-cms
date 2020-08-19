@@ -30,7 +30,6 @@ class News(LangChooseMixin):
     date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
     desc = HTMLField(verbose_name="Opis do listy", null=True, blank=True)
     content = HTMLField(verbose_name="Content wpisu", null=True, blank=True)
-    # movie
     slug = models.SlugField()
 
     class Meta:
