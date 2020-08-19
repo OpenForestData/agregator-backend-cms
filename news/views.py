@@ -3,7 +3,6 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-from easy_thumbnails.files import get_thumbnailer
 
 from news.models import News, NewsFront
 
