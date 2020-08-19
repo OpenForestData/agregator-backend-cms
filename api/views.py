@@ -14,13 +14,13 @@ from django.views.decorators.csrf import csrf_exempt
 from easy_thumbnails.files import get_thumbnailer
 from api.data_populator import DataPopulator
 from api.models import FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup, AddMenuLinks
-from api.utils import get_proper_template_info
+from api.utils import get_proper_template_content
 from page_manager.models import MainPage, IconSpecies, FaqShort
 
 
 def facet_list(request):
     """
-    Endpoint responsible for gettting facet list based on language
+    Endpoint responsible for getting facet list based on language
     :param request: request
     :return: all facet list
     """
@@ -47,7 +47,7 @@ def menu(request):
     Endpoint responsible for providing basic 'each view'
     data for frontend
     :param request: request
-    :return: Json data
+    :return: Json response
     """
 
     language = get_language_from_request(request)
@@ -75,7 +75,7 @@ def menu(request):
 
 def page_details(request, slug):
     """
-    Endpoint responsible for getting proper page template data
+    Endpoint responsible for getting proper page template content
     :param request: request
     :param slug: page slug (title)
     :return: json page data
@@ -185,7 +185,8 @@ def page_details(request, slug):
 
     # structure_requested = get_cms_setting('CMS_TOOLBAR_URL__BUILD') in request.GET
     language = get_language_from_request(request)
-    return JsonResponse(get_proper_template_info(page, language), safe=False)
+    content = get_proper_template_content(page, language)
+    return JsonResponse(content, safe=False)
 
 
 @csrf_exempt
@@ -246,21 +247,23 @@ def ragister_metadata_blocks(request):
 
 
 def home(request):
+    """
+    Endpoint responsible for getting data for home page
+    :param request: request
+    :return: Json Response
+    """
     language = get_language_from_request(request)
-
+    og_image_thumb_url = ""
+    mobile_app_image = ""
     main_page = MainPage.objects.filter(language=language).first()
-    try:
+    if main_page.og_image:
         options = {'size': (1200, 630), 'crop': True}
         og_image_thumb_url = get_thumbnailer(main_page.og_image).get_thumbnail(options).url
-    except Exception as ex:
-        print(ex)
-        og_image_thumb_url = ""
-    try:
+
+    if main_page.mobile_app_image:
         options = {'size': (200, 400), 'crop': True}
         mobile_app_image = get_thumbnailer(main_page.mobile_app_image).get_thumbnail(options).url
-    except Exception as ex:
-        print(ex)
-        mobile_app_image = ""
+
     return JsonResponse({
         'title_seo': main_page.title_seo,
         'description': main_page.description,
@@ -288,7 +291,13 @@ def home(request):
 
 
 def get_faq(request):
+    """
+    Endpoint responsible for getting faqs model data for each language
+    :param request: request
+    :return: Json Response
+    """
     language = get_language_from_request(request)
+
     response = list(
         FaqShort.objects.get_by_lang(language).order_by('order').values('title', 'content', 'anchor', 'order'))
     return JsonResponse(response, safe=False)

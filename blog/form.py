@@ -5,7 +5,7 @@ from blog.models import BlogKeyword, Article
 
 class ArticleAdminForm(ModelForm):
     """
-    Page pattern class - used as relation to cms page
+    Class responsible for form representation in admin panel
     """
 
     def __init__(self, *args, **kwargs):

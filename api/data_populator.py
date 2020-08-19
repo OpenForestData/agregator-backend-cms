@@ -6,8 +6,8 @@ from core.settings import LANGUAGES
 
 class DataPopulator:
     """
-    Class responsible for proper populating
-    registered data
+    Class responsible for proper population of
+    solr and dataverse data (metadata blocks and categories)
     """
 
     def populate_metadata_blocks(self, metadata_blocks: dict) -> bool:

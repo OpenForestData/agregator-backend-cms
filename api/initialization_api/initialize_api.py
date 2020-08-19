@@ -23,6 +23,10 @@ BASIC_FILTERS = [{
 
 
 def create_static_basic_filters_fields():
+    """
+    Creates basic static filter fields, used to properly show facet fields list
+    :return: None
+    """
     models_fields = {'basic': [FilterGroup, FilterField],
                      'advanced': [AdvancedSearchFilterGroup, AdvancedSearchFilterField]}
 
@@ -36,17 +40,16 @@ def create_static_basic_filters_fields():
             for field_data in basic_filter['fields']:
                 models_field[1].objects.create(
                     field_name=field_data['name'],
-                    friendly_name=field_data['displayName'],
-                    title=field_data['title'],
-                    type=field_data['type'],
-                    description=field_data['description'],
                     filter_group=filter_group,
                     public=True if field_type == 'advanced' else False
                 )
-        return True
 
 
 def create_basic_templates_data():
+    """
+    Creates basic templates for page conent in django-cms
+    :return: None
+    """
     page = create_page('Test Akordion', 'fullwidth.html', 'pl', 'Test Akordion')
     page.publish(language='pl')
     page = create_page('Privacy policy', 'fullwidth.html', 'pl', 'Privacy policy')
@@ -73,10 +76,6 @@ def create_basic_templates_data():
 
         })
 
-    # page_pattern = PagePattern.objects.create(page=page, accordion=accordion_page)
-    # page_pattern.save()
-    # page.publish(language='pl')
-
     page = create_page('Test O nas', 'fullwidth.html', 'pl', 'Test o nas')
 
     about_us_page = AboutUsPage(**{
@@ -89,7 +88,6 @@ def create_basic_templates_data():
         'content': "To jest content testowy"
     })
     about_us_page.save()
-    # PagePattern.objects.create(page=page, about_us=about_us_page)
     page.publish(language='pl')
 
     for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
@@ -118,10 +116,14 @@ def create_basic_templates_data():
             IconSpecies.objects.create(main_page=main_page, title=f'test{_}_{lang}')
 
         for _ in range(1, 5):
-            FaqShort.objects.create(main_page=main_page, title=f'test{_}_{lang}', anchor=f'{_}')
+            FaqShort.objects.create(title=f'test{_}_{lang}', anchor=f'{_}')
 
 
 def create_basic_articles_and_keyword():
+    """
+    Creates some articles for each language
+    :return: None
+    """
     for _ in range(1, 30):
         for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
             BlogKeyword.objects.create(**{
@@ -190,7 +192,11 @@ def create_basic_articles_and_keyword():
             article.save()
 
 
-def create_small_add_menu():
+def create_add_menu_links():
+    """
+    Creates paragraphs for add menu
+    :return: None
+    """
     for lang in BASIC_LANGUAGES_TO_INITIALIZE_DATA:
         for i in range(1, 3):
             menu_link = AddMenuLinks.objects.create(name=f"Test {i} {lang}", url="#", language=lang)

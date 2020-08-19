@@ -60,8 +60,6 @@ class AboutUsPage(MetaPage):
     content = HTMLField(verbose_name="Content wpisu")
 
 
-# end of about us page
-
 class MainPage(MetaPage, LangChooseMixin):
     """
     Model responsible for storing Main Page model data
@@ -164,13 +162,18 @@ class PagePattern(models.Model):
         verbose_name_plural = "Szablony stron"
         verbose_name = "Szablon strony"
 
-    def get_json_data(self):
+    def get_page_pattern_data(self) -> dict:
+        """
+        Method responsible for getting page patterns data based on
+        page pattern choosed by user
+        :return:
+        """
+        page_pattern_data = {}
         if self.about_us_id is not None:
             try:
                 og_image_thumb_url = get_thumbnailer(self.about_us.og_image).get_thumbnail(
                     {'size': (1200, 630), 'crop': True}).url
-            except Exception as ex:
-                print(ex)
+            except Exception:
                 og_image_thumb_url = ""
             page_pattern_data = {
                 'title_seo': self.about_us.title_seo,
@@ -189,8 +192,7 @@ class PagePattern(models.Model):
             options = {'size': (1200, 630), 'crop': True}
             try:
                 og_image_thumb_url = get_thumbnailer(accordion_page.og_image).get_thumbnail(options).url
-            except Exception as ex:
-                print(ex)
+            except Exception:
                 og_image_thumb_url = ""
             page_pattern_data = {
                 'title_seo': accordion_page.title_seo,

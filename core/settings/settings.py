@@ -172,7 +172,6 @@ INSTALLED_APPS = [
     'djangocms_video',
     # additional apps
     'corsheaders',
-    'content_manager',
     'page_manager',
     'api',
     'news',
@@ -182,13 +181,11 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 LANGUAGES = (
-    ## Customize this
     ('pl', gettext('pl')),
     ('en', gettext('en')),
 )
 
 CMS_LANGUAGES = {
-    ## Customize this
     1: [
         {
             'code': 'pl',
