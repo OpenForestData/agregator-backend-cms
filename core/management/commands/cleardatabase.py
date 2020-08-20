@@ -22,12 +22,14 @@ class Command(BaseCommand):
 
         cursor = connection.cursor()
         cursor.execute(
-            """SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type != 'VIEW' AND table_name NOT LIKE 'pg_ts_%%'""")
+            """SELECT table_name FROM information_schema.tables WHERE table_schema='public'\
+             AND table_type != 'VIEW' AND table_name NOT LIKE 'pg_ts_%%'""")
         rows = cursor.fetchall()
         for row in rows:
             try:
                 cursor.execute('drop table %s cascade ' % row[0])
-            except:
+            except Exception as ex:
+                print(ex)
                 self.stdout.write(self.style.SUCCESS("could not drop %s" % row[0]))
         self.stdout.write(
             self.style.SUCCESS('>>>>>>>>>>>>>>>>>>>>>>>>> Successful database dropped <<<<<<<<<<<<<<<<<<<<<<<<<<'))

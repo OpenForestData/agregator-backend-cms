@@ -20,10 +20,8 @@ class Command(BaseCommand):
             if 'venv' in dir_name[0]:
                 continue
             if dir_name[1] == "migrations":
-                    for file_name in filenames:
-                        if file_name == "__init__.py":
-                            continue
-                        else:
-                            self.stdout.write(
-                                self.style.SUCCESS('{} Removing migration file: {}.'.format(dir_name[0], file_name)))
-                            os.remove(os.path.join(root, file_name))
+                for file_name in filenames:
+                    if file_name != "__init__.py":
+                        self.stdout.write(
+                            self.style.SUCCESS('{} Removing migration file: {}.'.format(dir_name[0], file_name)))
+                        os.remove(os.path.join(root, file_name))

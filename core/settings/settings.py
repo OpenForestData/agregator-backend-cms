@@ -1,4 +1,5 @@
 import os  # isort:skip
+
 gettext = lambda s: s
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 """
@@ -28,26 +29,17 @@ SECRET_KEY = '6d$r$a)0th5#+ib-)+-%kpj$4yxr61-cs16s8ekte*_02^p19p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 
-
-
-
 ROOT_URLCONF = 'core.urls'
-
-
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-
 
 
 # Password validation
@@ -68,7 +60,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -82,25 +73,25 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
-STATIC_ROOT = os.path.join(DATA_DIR, 'static')
+STATIC_URL = '/media-cms/'
+MEDIA_URL = '/api/v1/media-cms/'
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
 #
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'core', 'static'),
 # )
-SITE_ID = 1
 
+SITE_ID = 1
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'core', 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'core', 'templates'), ],
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -123,7 +114,6 @@ TEMPLATES = [
     },
 ]
 
-
 MIDDLEWARE = [
     'cms.middleware.utils.ApphookReloadMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -140,6 +130,7 @@ MIDDLEWARE = [
 ]
 
 INSTALLED_APPS = [
+    'core',
     'djangocms_admin_style',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -179,20 +170,22 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_googlemap',
     'djangocms_video',
-    'core',
     # additional apps
-    'content_manager',
+    'corsheaders',
     'page_manager',
+    'api',
+    'news',
+    'blog'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 LANGUAGES = (
-    ## Customize this
     ('pl', gettext('pl')),
     ('en', gettext('en')),
 )
 
 CMS_LANGUAGES = {
-    ## Customize this
     1: [
         {
             'code': 'pl',
@@ -201,9 +194,15 @@ CMS_LANGUAGES = {
             'public': True,
             'hide_untranslated': False,
         },
+        {
+            'code': 'en',
+            'name': gettext('en'),
+            'redirect_on_fallback': True,
+            'public': True,
+        },
     ],
     'default': {
-        'redirect_on_fallback': True,
+        'redirect_on_fallback': False,
         'public': True,
         'hide_untranslated': False,
     },
@@ -212,8 +211,6 @@ CMS_LANGUAGES = {
 CMS_TEMPLATES = (
     ## Customize this
     ('fullwidth.html', 'Fullwidth'),
-    ('sidebar_left.html', 'Sidebar Left'),
-    ('sidebar_right.html', 'Sidebar Right')
 )
 
 CMS_PERMISSION = True
@@ -221,14 +218,13 @@ CMS_PERMISSION = True
 CMS_PLACEHOLDER_CONF = {}
 
 DATABASES = {
-    'default': {
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.sqlite3',
-        'HOST': 'localhost',
-        'NAME': 'sqliteproject.db',
-        'PASSWORD': '',
-        'PORT': '',
-        'USER': ''
+    "default": {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', 'agregatorcms'),
+        'USER': os.environ.get('DB_USER', 'agregatorcmsusr'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'HhP4gXsH'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -239,7 +235,11 @@ THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.filters'
 )
 
-
 PROJECT_INFO = {
-    'site_name': "FlyUp"
+    'site_name': "Agregator Backend CMS"
 }
+
+APPEND_SLASH = False
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100000000
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
