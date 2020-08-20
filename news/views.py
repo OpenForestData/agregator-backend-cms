@@ -18,7 +18,7 @@ def detail(request, slug):
     if len(articles_queryset) > 0:
         return JsonResponse({'article': articles_queryset.first().get_content()},
                             safe=False)
-    return redirect(reverse('api:news:index'))
+    return JsonResponse({'article': "No Content"})
 
 
 def latest(request):
