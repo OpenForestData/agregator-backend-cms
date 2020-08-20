@@ -1,8 +1,6 @@
 from cms.utils import get_language_from_request
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import redirect
-from django.urls import reverse
 
 from news.models import News, NewsFront
 
