@@ -129,7 +129,10 @@ class Article(LangChooseMixin):
         articles_list = list(self.__class__.objects.get_by_lang(self.language).order_by('date'))
         obj_index = articles_list.index(self)
         try:
-            prev_article = articles_list[obj_index - 1]
+            if obj_index == 0:
+                prev_article = None
+            else:
+                prev_article = articles_list[obj_index - 1]
         except IndexError:
             prev_article = None
         try:
