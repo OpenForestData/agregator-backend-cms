@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.urls import reverse
 from djangocms_text_ckeditor.fields import HTMLField
@@ -27,7 +29,7 @@ class News(LangChooseMixin):
     image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga", on_delete=models.CASCADE,
                                     null=True, blank=True, related_name='image_in_list_news')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
-    date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
+    date = models.DateField(verbose_name="Data utworzenia", default=datetime.date.today)
     desc = HTMLField(verbose_name="Opis do listy", null=True, blank=True)
     content = HTMLField(verbose_name="Content wpisu", null=True, blank=True)
     slug = models.SlugField()

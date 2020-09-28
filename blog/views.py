@@ -57,7 +57,7 @@ def index(request):
             'slug': article_keyword.slug
         })
 
-    articles_queryset = Article.objects.get_by_lang(language).order_by('date')
+    articles_queryset = Article.objects.get_by_lang(language).order_by('-date')
     if keywords_slug:
         blog_keyword = BlogKeyword.objects.filter(slug=keywords_slug, language=language).first()
         if blog_keyword:
