@@ -52,8 +52,7 @@ class DataPopulator:
             al_advanced_search_filter_fields_names = []
             for filter_group in AdvancedSearchFilterGroup.objects.get_by_lang(lang):
                 al_advanced_search_filter_fields_names += [filter_field['field_name'] for filter_field in
-                                           filter_group.fields.all().values('field_name')]
-
+                                                           filter_group.fields.all().values('field_name')]
             for metadata_name, metadata_value in metadata_blocks.items():
                 if metadata_value['name'] not in all_advanced_search_filter_groups_names:
                     filter_group = AdvancedSearchFilterGroup.objects.create(
