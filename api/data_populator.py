@@ -1,6 +1,7 @@
 import json
 
-from api.models import FilterField, FilterGroup, AgregatorCategory, AdvancedSearchFilterGroup, AdvancedSearchFilterField
+from api.models import FilterField, FilterGroup, AgregatorCategory, \
+    AdvancedSearchFilterGroup, AdvancedSearchFilterField
 from core.settings import LANGUAGES
 
 
@@ -19,9 +20,9 @@ class DataPopulator:
         """
         for lang_tuple in LANGUAGES:
             lang = lang_tuple[0]
-            # TODO: smth wrong - not good performacne
             all_filter_groups_names = [filter_group['name'] for filter_group in
-                                       FilterGroup.objects.get_by_lang(lang).values('name')]
+                                       FilterGroup.objects.get_by_lang(lang).values(
+                                           'name')]
             al_filter_fields_names = []
             for filter_group in FilterGroup.objects.get_by_lang(lang):
                 al_filter_fields_names += [filter_field['field_name'] for filter_field in
@@ -36,7 +37,8 @@ class DataPopulator:
                         language=lang
                     )
                 else:
-                    filter_group = FilterGroup.objects.get(name=metadata_value['name'], language=lang)
+                    filter_group = FilterGroup.objects.get(name=metadata_value['name'],
+                                                           language=lang)
                 for _, field_data in metadata_value['fields'].items():
                     if field_data['name'] not in al_filter_fields_names:
                         if not field_data['name'] in wrong_names:
@@ -46,13 +48,17 @@ class DataPopulator:
                                 filter_group=filter_group,
                                 public=False
                             )
-            all_advanced_search_filter_groups_names = [filter_group['name'] for filter_group in
-                                                       AdvancedSearchFilterGroup.objects.get_by_lang(lang).values(
+            all_advanced_search_filter_groups_names = [filter_group['name'] for
+                                                       filter_group in
+                                                       AdvancedSearchFilterGroup.objects.get_by_lang(
+                                                           lang).values(
                                                            'name')]
             al_advanced_search_filter_fields_names = []
             for filter_group in AdvancedSearchFilterGroup.objects.get_by_lang(lang):
-                al_advanced_search_filter_fields_names += [filter_field['field_name'] for filter_field in
-                                           filter_group.fields.all().values('field_name')]
+                al_advanced_search_filter_fields_names += [filter_field['field_name'] for
+                                                           filter_field in
+                                                           filter_group.fields.all().values(
+                                                               'field_name')]
 
             for metadata_name, metadata_value in metadata_blocks.items():
                 if metadata_value['name'] not in all_advanced_search_filter_groups_names:
@@ -62,7 +68,8 @@ class DataPopulator:
                         language=lang
                     )
                 else:
-                    filter_group = AdvancedSearchFilterGroup.objects.get(name=metadata_value['name'], language=lang)
+                    filter_group = AdvancedSearchFilterGroup.objects.get(
+                        name=metadata_value['name'], language=lang)
                 for _, field_data in metadata_value['fields'].items():
                     if field_data['name'] not in al_advanced_search_filter_fields_names:
                         AdvancedSearchFilterField.objects.create(
@@ -92,12 +99,16 @@ class DataPopulator:
                 if category['name'] not in agregator_categories_names:
                     for lang in LANGUAGES:
                         AgregatorCategory.objects.create(dataverse_id=category['id'],
-                                                         friendly_name=category['friendly_name'] + f" | {lang[0]}",
+                                                         friendly_name=category[
+                                                                           'friendly_name'] + f" | {lang[0]}",
                                                          name=category['name'],
-                                                         description=category['description'],
-                                                         dv_affiliation=category['dvAffiliation'],
+                                                         description=category[
+                                                             'description'],
+                                                         dv_affiliation=category[
+                                                             'dvAffiliation'],
                                                          dv_name=category['dvName'],
-                                                         publication_date=category['publicationDate'],
+                                                         publication_date=category[
+                                                             'publicationDate'],
                                                          language=lang[0])
             successfully_populated = True
         except Exception as ex:
