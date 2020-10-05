@@ -7,7 +7,7 @@ from news.models import News
 class NewsAdmin(admin.ModelAdmin):
     model = News
     exclude = ('slug',)
-    ordering = ['language', 'date']
+    ordering = ['language', '-date']
     list_filter = (
         ('language', admin.AllValuesFieldListFilter),
     )

@@ -4,7 +4,7 @@ from django.urls import reverse
 from djangocms_text_ckeditor.fields import HTMLField
 from easy_thumbnails.files import get_thumbnailer
 from filer.fields.image import FilerImageField
-
+from ckeditor_uploader.fields import RichTextUploadingField
 from core.base_models import LangChooseMixin
 
 
@@ -93,9 +93,9 @@ class Article(LangChooseMixin):
                                     null=True, blank=True, related_name='image_in_list')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
-    desc = HTMLField(verbose_name="Opis do listy", null=True, blank=True)
+    desc = RichTextUploadingField(verbose_name="Opis do listy", null=True, blank=True)
     keywords = models.ManyToManyField(BlogKeyword, related_name="blog_articles")
-    content = HTMLField(verbose_name="Content wpisu", null=True, blank=True)
+    content = RichTextUploadingField(verbose_name="Content wpisu", null=True, blank=True)
     movie_youtube_link = models.CharField(max_length=120, verbose_name="Link do filmu na YT", null=True, blank=True)
     slug = models.SlugField()
 
