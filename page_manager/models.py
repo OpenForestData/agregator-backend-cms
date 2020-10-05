@@ -74,8 +74,8 @@ class AboutUsPage(MetaPage):
     content = HTMLField(verbose_name="Content wpisu")
 
     class Meta:
-        verbose_name = "Strona O nas"
-        verbose_name_plural = "Strony o nas"
+        verbose_name = "Strona o Nas"
+        verbose_name_plural = "Strony o Nas"
 
 
 class MainPage(MetaPage, LangChooseMixin):
@@ -167,8 +167,8 @@ class AccordionPage(MetaPage):
     content = HTMLField(verbose_name="Content wpisu", null=True, blank=True)
 
     class Meta:
-        verbose_name = "Podstrony z Akordioinami"
-        verbose_name_plural = "Podstrony z Akordionami"
+        verbose_name = "Strona z Akordionami"
+        verbose_name_plural = "Strony z Akordionami"
 
 
 class Accordion(models.Model):

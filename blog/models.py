@@ -1,10 +1,9 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
-# Create your models here.
 from django.urls import reverse
-from djangocms_text_ckeditor.fields import HTMLField
 from easy_thumbnails.files import get_thumbnailer
 from filer.fields.image import FilerImageField
-from ckeditor_uploader.fields import RichTextUploadingField
+
 from core.base_models import LangChooseMixin
 
 
@@ -15,17 +14,24 @@ class BlogFront(models.Model):
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     image = FilerImageField(verbose_name="Obrazek górny", on_delete=models.CASCADE,
                             null=True, blank=True, related_name='image_for_blog_top')
-    title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
+    title_seo = models.CharField(max_length=500,
+                                 verbose_name="Tytuł (nadpisuje podstawowy tytuł)",
+                                 null=True,
                                  blank=True)
-    description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
+    description = models.CharField(max_length=500,
+                                   verbose_name="Opis (nadpisuje podstawowy opis)",
+                                   null=True,
                                    blank=True)
     keywords_seo = models.CharField(max_length=500, verbose_name="Keywords", null=True,
                                     blank=True)
     author = models.CharField(max_length=500, verbose_name="Autor", null=True,
                               blank=True)
-    og_type = models.CharField(max_length=15, verbose_name="Og:Type - według dokumentacji: https://ogp.me/", null=True,
+    og_type = models.CharField(max_length=15,
+                               verbose_name="Og:Type - według dokumentacji: https://ogp.me/",
+                               null=True,
                                blank=True)
-    og_image = FilerImageField(verbose_name="Miniatura w social Media", on_delete=models.CASCADE,
+    og_image = FilerImageField(verbose_name="Miniatura w social Media",
+                               on_delete=models.CASCADE,
                                null=True, blank=True, related_name='blog_index_og_image')
 
     class Meta:
@@ -77,26 +83,36 @@ class Article(LangChooseMixin):
     """
     Class responsible for Article model db structure representation
     """
-    title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
+    title_seo = models.CharField(max_length=500,
+                                 verbose_name="Tytuł (nadpisuje podstawowy tytuł)",
+                                 null=True,
                                  blank=True)
-    description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
+    description = models.CharField(max_length=500,
+                                   verbose_name="Opis (nadpisuje podstawowy opis)",
+                                   null=True,
                                    blank=True)
     keywords_seo = models.CharField(max_length=500, verbose_name="Keywords", null=True,
                                     blank=True)
     author = models.CharField(max_length=500, verbose_name="Autor", null=True,
                               blank=True)
-    og_type = models.CharField(max_length=15, verbose_name="Og:Type - według dokumentacji: https://ogp.me/", null=True,
+    og_type = models.CharField(max_length=15,
+                               verbose_name="Og:Type - według dokumentacji: https://ogp.me/",
+                               null=True,
                                blank=True)
-    og_image = FilerImageField(verbose_name="Miniatura w social Media", on_delete=models.CASCADE,
+    og_image = FilerImageField(verbose_name="Miniatura w social Media",
+                               on_delete=models.CASCADE,
                                null=True, blank=True, related_name='article_og_image')
-    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga", on_delete=models.CASCADE,
+    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga",
+                                    on_delete=models.CASCADE,
                                     null=True, blank=True, related_name='image_in_list')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     date = models.DateField(auto_now_add=True, verbose_name="Data utworzenia")
     desc = RichTextUploadingField(verbose_name="Opis do listy", null=True, blank=True)
     keywords = models.ManyToManyField(BlogKeyword, related_name="blog_articles")
     content = RichTextUploadingField(verbose_name="Content wpisu", null=True, blank=True)
-    movie_youtube_link = models.CharField(max_length=120, verbose_name="Link do filmu na YT", null=True, blank=True)
+    movie_youtube_link = models.CharField(max_length=120,
+                                          verbose_name="Link do filmu na YT", null=True,
+                                          blank=True)
     slug = models.SlugField()
 
     class Meta:
@@ -126,7 +142,8 @@ class Article(LangChooseMixin):
         Method responsible for getting next_article and prev article objects
         :return: tuple of two Article instances
         """
-        articles_list = list(self.__class__.objects.get_by_lang(self.language).order_by('date'))
+        articles_list = list(
+            self.__class__.objects.get_by_lang(self.language).order_by('date'))
         obj_index = articles_list.index(self)
         try:
             if obj_index == 0:
@@ -171,7 +188,8 @@ class Article(LangChooseMixin):
             'title': self.title,
             'date': self.date,
             'content': self.content,
-            'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(), 'slug': keyword.get_slug()} for
+            'keywords': [{'title': keyword.title, 'url': keyword.get_absolute_url(),
+                          'slug': keyword.get_slug()} for
                          keyword in self.keywords.all()],
             'movie_youtube_link': self.movie_youtube_link,
             'url': self.get_absolute_url(),

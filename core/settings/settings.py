@@ -246,4 +246,10 @@ APPEND_SLASH = False
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100000000
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
