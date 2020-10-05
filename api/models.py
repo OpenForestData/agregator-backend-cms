@@ -30,7 +30,8 @@ class AdvancedSearchFilterField(models.Model):
     single field - each field has a relation with proper
     filter group
     """
-    filter_group = models.ForeignKey(AdvancedSearchFilterGroup, related_name='fields', on_delete=models.CASCADE)
+    filter_group = models.ForeignKey(AdvancedSearchFilterGroup, related_name='fields',
+                                     on_delete=models.CASCADE)
     field_name = models.CharField(max_length=120, verbose_name="Nazwa pola w Dataverse")
     friendly_name = models.CharField(max_length=120, verbose_name="Nazwa przyjazna")
     title = models.CharField(max_length=120, verbose_name="Tytuł")
@@ -70,7 +71,8 @@ class FilterField(models.Model):
     single field - each field has a relation with proper
     filter group
     """
-    filter_group = models.ForeignKey(FilterGroup, related_name='fields', on_delete=models.CASCADE)
+    filter_group = models.ForeignKey(FilterGroup, related_name='fields',
+                                     on_delete=models.CASCADE)
     field_name = models.CharField(max_length=120, verbose_name="Nazwa pola w Dataverse")
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")
@@ -90,7 +92,9 @@ class AgregatorCategory(LangChooseMixin):
     name = models.CharField(max_length=120, verbose_name="Name")
     dv_name = models.CharField(max_length=120, verbose_name="DvName")
     publication_date = models.CharField(max_length=10, verbose_name="Data publikacji")
-    dv_affiliation = models.CharField(max_length=120, verbose_name="Dataverse Affiliation", null=True, blank=True)
+    dv_affiliation = models.CharField(max_length=120,
+                                      verbose_name="Dataverse Affiliation", null=True,
+                                      blank=True)
     order = models.IntegerField(default=1, verbose_name="Kolejność")
     public = models.BooleanField(default=True, verbose_name="Publiczny")
 

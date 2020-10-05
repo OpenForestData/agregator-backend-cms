@@ -252,5 +252,4 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-
 CKEDITOR_UPLOAD_PATH = 'uploads/'
