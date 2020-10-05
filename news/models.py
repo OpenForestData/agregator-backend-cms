@@ -1,6 +1,5 @@
 import datetime
 
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
 from easy_thumbnails.files import get_thumbnailer
