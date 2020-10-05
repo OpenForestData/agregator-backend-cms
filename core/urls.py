@@ -23,6 +23,7 @@ urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),
     # /pl/cms-api/v1/
     url(r'^cms-api/v1/', include('api.urls')),
+    url(r'^cms-api/v1/ckeditor/', include('ckeditor_uploader.urls')),
     # /
     url(r'^', include('api.cms_urls')),
 )

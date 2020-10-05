@@ -1,8 +1,8 @@
 import datetime
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
-from djangocms_text_ckeditor.fields import HTMLField
 from easy_thumbnails.files import get_thumbnailer
 from filer.fields.image import FilerImageField
 
@@ -13,25 +13,34 @@ class News(LangChooseMixin):
     """
     Class responsible for News model db structure
     """
-    title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
+    title_seo = models.CharField(max_length=500,
+                                 verbose_name="Tytuł (nadpisuje podstawowy tytuł)",
+                                 null=True,
                                  blank=True)
-    description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
+    description = models.CharField(max_length=500,
+                                   verbose_name="Opis (nadpisuje podstawowy opis)",
+                                   null=True,
                                    blank=True)
     keywords_seo = models.CharField(max_length=500, verbose_name="Keywords", null=True,
                                     blank=True)
     author = models.CharField(max_length=500, verbose_name="Autor", null=True,
                               blank=True)
-    og_type = models.CharField(max_length=15, verbose_name="Og:Type - według dokumentacji: https://ogp.me/", null=True,
+    og_type = models.CharField(max_length=15,
+                               verbose_name="Og:Type - według dokumentacji: https://ogp.me/",
+                               null=True,
                                blank=True)
-    og_image = FilerImageField(verbose_name="Miniatura w social Media", on_delete=models.CASCADE,
+    og_image = FilerImageField(verbose_name="Miniatura w social Media",
+                               on_delete=models.CASCADE,
                                null=True, blank=True, related_name='news_og_image')
     # thumbnail
-    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga", on_delete=models.CASCADE,
-                                    null=True, blank=True, related_name='image_in_list_news')
+    image_in_list = FilerImageField(verbose_name="Obrazek na liście bloga",
+                                    on_delete=models.CASCADE,
+                                    null=True, blank=True,
+                                    related_name='image_in_list_news')
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     date = models.DateField(verbose_name="Data utworzenia", default=datetime.date.today)
-    desc = HTMLField(verbose_name="Opis do listy", null=True, blank=True)
-    content = HTMLField(verbose_name="Content wpisu", null=True, blank=True)
+    desc = RichTextUploadingField(verbose_name="Opis do listy", null=True, blank=True)
+    content = RichTextUploadingField(verbose_name="Content wpisu", null=True, blank=True)
     slug = models.SlugField()
 
     class Meta:
@@ -132,15 +141,22 @@ class NewsFront(models.Model):
     title = models.CharField(max_length=120, verbose_name="Tytuł", unique=True)
     image = FilerImageField(verbose_name="Obrazek górny", on_delete=models.CASCADE,
                             null=True, blank=True, related_name='image_for_news_top')
-    title_seo = models.CharField(max_length=500, verbose_name="Tytuł (nadpisuje podstawowy tytuł)", null=True,
+    title_seo = models.CharField(max_length=500,
+                                 verbose_name="Tytuł (nadpisuje podstawowy tytuł)",
+                                 null=True,
                                  blank=True)
-    description = models.CharField(max_length=500, verbose_name="Opis (nadpisuje podstawowy opis)", null=True,
+    description = models.CharField(max_length=500,
+                                   verbose_name="Opis (nadpisuje podstawowy opis)",
+                                   null=True,
                                    blank=True)
     keywords_seo = models.CharField(max_length=500, verbose_name="Keywords", null=True,
                                     blank=True)
     author = models.CharField(max_length=500, verbose_name="Autor", null=True,
                               blank=True)
-    og_type = models.CharField(max_length=15, verbose_name="Og:Type - według dokumentacji: https://ogp.me/", null=True,
+    og_type = models.CharField(max_length=15,
+                               verbose_name="Og:Type - według dokumentacji: https://ogp.me/",
+                               null=True,
                                blank=True)
-    og_image = FilerImageField(verbose_name="Miniatura w social Media", on_delete=models.CASCADE,
+    og_image = FilerImageField(verbose_name="Miniatura w social Media",
+                               on_delete=models.CASCADE,
                                null=True, blank=True, related_name='news_index_og_image')
