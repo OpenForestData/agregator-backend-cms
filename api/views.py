@@ -285,7 +285,7 @@ def home(request):
         'categories': [{'title': category.title, 'image': category.get_thumbnail(), 'href': category.href} for category
                        in
                        IconSpecies.objects.filter(main_page=main_page).order_by('order')],
-        'faqs': [{'title': faq.title, 'anchor': faq.anchor} for faq in
+        'faqs': [{'title': faq.title, 'anchor': faq.get_anchor()} for faq in
                  FaqShort.objects.get_by_lang(language).order_by('order')]
     }, safe=False)
 
