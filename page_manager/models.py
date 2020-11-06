@@ -155,6 +155,12 @@ class FaqShort(LangChooseMixin):
     def __str__(self):
         return str(self.title)
 
+    def get_anchor(self):
+        """
+        Creates anchor tag for each faq
+        """
+        return f'#{self.pk}'
+
 
 class AccordionPage(MetaPage):
     """

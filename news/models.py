@@ -41,7 +41,7 @@ class News(LangChooseMixin):
     date = models.DateField(verbose_name="Data utworzenia", default=datetime.date.today)
     desc = RichTextUploadingField(verbose_name="Opis do listy", null=True, blank=True)
     content = RichTextUploadingField(verbose_name="Content wpisu", null=True, blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=500)
 
     class Meta:
         verbose_name_plural = "Newsy"
